@@ -1,0 +1,6 @@
+@UniPass.WebApi_HostAddress = http://localhost:5001
+
+GET {{UniPass.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

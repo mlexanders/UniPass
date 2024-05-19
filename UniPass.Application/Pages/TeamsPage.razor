@@ -1,0 +1,88 @@
+﻿@page "/Teams"
+@using UniPass.Infrastructure.Models
+@using UniPass.Application.Services.Api
+@using UniPass.Application.Components.Modals
+@inject DialogService DialogService
+@if (_teams is null)
+{
+    <ProgressBar/>
+}
+
+else
+{
+    
+    <RadzenText>Все команды</RadzenText>
+
+    <RadzenDataGrid TItem="Team"
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                    AllowPaging="true"  PageSize="@_pageSize"
+                    AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
+                    SelectionMode="DataGridSelectionMode.Single"
+                    Data="@_teams" LoadData="@LoadData" RowSelect="@OnSelect"
+                    >
+        <Columns>
+            <RadzenDataGridColumn Property="Name" Title="Title"/>
+        </Columns>
+    </RadzenDataGrid>
+}
+
+
+
+@code {
+    private IEnumerable<Team> _teams;
+    private IList<Team> _selectedTeam;
+    private string _message = "";
+    private bool _isLoading;
+    private int _pageSize = 5;
+    private int _count;
+
+    [Inject] private TeamService TeamService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetTeamsPage(_pageSize, 0);
+    }
+    
+    
+    private async Task LoadData(LoadDataArgs args)
+    {
+        await GetTeamsPage(args.Top, args.Skip);
+    }
+
+
+    private async Task GetTeamsPage(int? argsTop, int? argsSkip)
+    {
+        _isLoading = true;
+
+        var skip = argsSkip ?? 0;
+        var page = skip / _pageSize;
+        try
+        {
+            var result = await TeamService.Read(page, argsTop ?? _pageSize);
+            if (!result.Success)
+            {
+                _message = result.Message;
+                return;
+            }
+
+            var pagedList = result.Value;
+            var teams = pagedList.Items ?? [];
+            
+            _teams = teams.AsODataEnumerable();
+            _count = pagedList.Count;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+
+        _isLoading = false;
+    }
+    
+    private async Task OnSelect(Team team)
+    {
+        var result = await DialogService.OpenAsync<ShowTeamModal>($"Команда: {team.Name}",
+            new Dictionary<string, object>() { { "Team", team } },
+            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+    }
+}

@@ -1,0 +1,39 @@
+﻿@using UniPass.Application.Services
+@inject ApplicationAuthenticationStateProvider AuthenticationStateProvider
+
+@* Visible="@AuthenticationAddWorkerToTeamModaltateProvider.IsAuthenticated()" *@
+<RadzenProfileMenu  Click="@OnClick">
+    <Template>
+        <RadzenGravatar Email="@_email">
+        </RadzenGravatar>
+    </Template>
+    <ChildContent>
+        <RadzenProfileMenuItem Text="Профиль" Path="/Profile" Icon="account_circle"></RadzenProfileMenuItem>
+        <RadzenProfileMenuItem Text="Выйти" Icon="power_settings_new" Value="logout"/>
+    </ChildContent>
+</RadzenProfileMenu>
+
+@code
+{
+    [Inject] private NavigationManager NavigationManager { get; set; }
+    private string _email;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var user = await AuthenticationStateProvider.GetUser();
+            _email = user.Email;
+        }
+        catch
+        {
+            // ignored
+        }
+    }
+
+    private async Task OnClick(RadzenProfileMenuItem args)
+    {
+        if (args.Value == "logout") await AuthenticationStateProvider.Logout();
+        NavigationManager.NavigateTo("/Login");
+    }
+}

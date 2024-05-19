@@ -1,0 +1,21 @@
+﻿@layout LoginLayout
+@page "/login"
+@using UniPass.Application.Layout
+@using UniPass.Infrastructure.ViewModels
+@attribute [AllowAnonymous]
+
+<PageTitle>Login</PageTitle>
+<RadzenText Text="Login" TextStyle="TextStyle.H5" class="mb-4" TagName="TagName.H2"/>
+<RadzenRow>
+    <RadzenColumn SizeMD="12">
+        <RadzenTemplateForm TItem="LoginViewModel" Data="@_model">
+            <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Danger" Visible="@_errorVisible">@_error</RadzenAlert>
+            <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Info" Visible="@_infoVisible">@_info</RadzenAlert>
+            <RadzenLogin
+                Username="@_model.Email" Password="@_model.Password"
+                Login="@Submit" LoginText="Войти" PasswordText="Пароль"
+                AllowRegister="true" Register="@OnRegister"
+                AllowResetPassword="true" ResetPassword="@OnReset"/>
+        </RadzenTemplateForm>
+    </RadzenColumn>
+</RadzenRow>

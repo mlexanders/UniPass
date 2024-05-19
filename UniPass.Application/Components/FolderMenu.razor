@@ -1,0 +1,36 @@
+﻿@using UniPass.Domain
+@inject NavigationManager NavigationManager
+
+<RadzenPanelMenuItem Icon="folder_open" IconColor="@Colors.Secondary" Text="@(Folder?.Name ?? "folder")" Path="@GetPath(Folder)">
+    @if (Folder?.Folders is not null)
+    {
+        @foreach (var folder in Folder.Folders)
+        {
+            <FolderMenu Folder="@folder"></FolderMenu>
+        }
+    }
+
+    @if (Folder?.Keys is not null)
+    {
+        @foreach (var key in Folder.Keys)
+        {
+            <RadzenPanelMenuItem Icon="vpn_key" IconColor="@Colors.Secondary" Text="@key.Name" Path="@GetPath(key)"/>
+        }
+    }
+</RadzenPanelMenuItem>
+
+
+@code{
+
+    private string GetPath(Folder folder)
+    {
+        return $"/?FolderId={folder.Id}";
+    }
+
+    private string GetPath(Key key)
+    {
+        return $"/?KeyId={key.Id}";
+    }
+
+    [Parameter] public Folder Folder { get; set; }
+}
