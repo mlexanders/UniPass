@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{50205F43-EB73-4826-8D58-311ACB9CB92C}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Domain", "UniPass.Domain\UniPass.Domain.csproj", "{DD04430F-38FF-470C-A8C7-F1615C957030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Infrastructure", "UniPass.Infrastructure\UniPass.Infrastructure.csproj", "{616D2B1F-8581-4279-BC8A-FDFAE479D10A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.WebApi", "UniPass.WebApi\UniPass.WebApi.csproj", "{24093138-3AF2-45FB-B49A-CA6AA8B371C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Application", "UniPass.Application\UniPass.Application.csproj", "{D23C9E29-0C79-424B-850B-174FE92A67E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Application.Web", "UniPass.Application.Web\UniPass.Application.Web.csproj", "{820D1278-5D16-40C5-B1A1-F31F1AA6484C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DD04430F-38FF-470C-A8C7-F1615C957030} = {50205F43-EB73-4826-8D58-311ACB9CB92C}
+		{616D2B1F-8581-4279-BC8A-FDFAE479D10A} = {50205F43-EB73-4826-8D58-311ACB9CB92C}
+		{24093138-3AF2-45FB-B49A-CA6AA8B371C3} = {50205F43-EB73-4826-8D58-311ACB9CB92C}
+		{D23C9E29-0C79-424B-850B-174FE92A67E1} = {50205F43-EB73-4826-8D58-311ACB9CB92C}
+		{820D1278-5D16-40C5-B1A1-F31F1AA6484C} = {50205F43-EB73-4826-8D58-311ACB9CB92C}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD04430F-38FF-470C-A8C7-F1615C957030}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD04430F-38FF-470C-A8C7-F1615C957030}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD04430F-38FF-470C-A8C7-F1615C957030}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD04430F-38FF-470C-A8C7-F1615C957030}.Release|Any CPU.Build.0 = Release|Any CPU
+		{616D2B1F-8581-4279-BC8A-FDFAE479D10A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{616D2B1F-8581-4279-BC8A-FDFAE479D10A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{616D2B1F-8581-4279-BC8A-FDFAE479D10A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{616D2B1F-8581-4279-BC8A-FDFAE479D10A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24093138-3AF2-45FB-B49A-CA6AA8B371C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24093138-3AF2-45FB-B49A-CA6AA8B371C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24093138-3AF2-45FB-B49A-CA6AA8B371C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24093138-3AF2-45FB-B49A-CA6AA8B371C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D23C9E29-0C79-424B-850B-174FE92A67E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D23C9E29-0C79-424B-850B-174FE92A67E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D23C9E29-0C79-424B-850B-174FE92A67E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D23C9E29-0C79-424B-850B-174FE92A67E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{820D1278-5D16-40C5-B1A1-F31F1AA6484C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{820D1278-5D16-40C5-B1A1-F31F1AA6484C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{820D1278-5D16-40C5-B1A1-F31F1AA6484C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{820D1278-5D16-40C5-B1A1-F31F1AA6484C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
