@@ -7,14 +7,5 @@
 
 [Bb]in/
 [Oo]bj/
-/UniPass.Application/bin/
-/UniPass.Application/obj/
-/UniPass.Application.Web/bin/
-/UniPass.Application.Web/obj/
-/UniPass.Domain/bin/
-/UniPass.Domain/obj/
-/UniPass.Infrastructure/bin/
-/UniPass.Infrastructure/obj/
-/UniPass.WebApi/bin/
-/UniPass.WebApi/obj/
+
 /.idea/
