@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Application", "src\UniPass.Application\UniPass.Application.csproj", "{01C6E283-6C2B-4B6C-B433-DF85F73C0A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Application.Web", "src\UniPass.Application.Web\UniPass.Application.Web.csproj", "{9D4DBFD8-096A-486B-8632-A65AB9AE8B0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Domain", "src\UniPass.Domain\UniPass.Domain.csproj", "{6C6F9756-2D2C-439D-8C63-D93FBD5FB05F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Infrastructure", "src\UniPass.Infrastructure\UniPass.Infrastructure.csproj", "{93A866BB-5F41-4CBA-BF23-97A52DA43609}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.WebApi", "src\UniPass.WebApi\UniPass.WebApi.csproj", "{8E003294-1DE9-4085-B02D-64E8FC97264A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01C6E283-6C2B-4B6C-B433-DF85F73C0A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01C6E283-6C2B-4B6C-B433-DF85F73C0A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01C6E283-6C2B-4B6C-B433-DF85F73C0A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01C6E283-6C2B-4B6C-B433-DF85F73C0A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D4DBFD8-096A-486B-8632-A65AB9AE8B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D4DBFD8-096A-486B-8632-A65AB9AE8B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D4DBFD8-096A-486B-8632-A65AB9AE8B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D4DBFD8-096A-486B-8632-A65AB9AE8B0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C6F9756-2D2C-439D-8C63-D93FBD5FB05F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C6F9756-2D2C-439D-8C63-D93FBD5FB05F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C6F9756-2D2C-439D-8C63-D93FBD5FB05F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C6F9756-2D2C-439D-8C63-D93FBD5FB05F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93A866BB-5F41-4CBA-BF23-97A52DA43609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93A866BB-5F41-4CBA-BF23-97A52DA43609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93A866BB-5F41-4CBA-BF23-97A52DA43609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93A866BB-5F41-4CBA-BF23-97A52DA43609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E003294-1DE9-4085-B02D-64E8FC97264A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E003294-1DE9-4085-B02D-64E8FC97264A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E003294-1DE9-4085-B02D-64E8FC97264A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E003294-1DE9-4085-B02D-64E8FC97264A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
