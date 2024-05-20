@@ -1,9 +1,0 @@
-@using UniPass.Application.Layout
-@inject NavigationManager NavigationManager
-@layout LoginLayout
-@attribute [AllowAnonymous]
-
-@code {
-
-    protected override async Task OnInitializedAsync() => NavigationManager.NavigateTo("/Login", false);
-}

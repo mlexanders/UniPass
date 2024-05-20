@@ -1,0 +1,15 @@
+{
+  "name": "UniPass.Client.Web",
+  "short_name": "UniPass.Client.Web",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#03173d",
+  "icons": [
+    {
+      "src": "/images/logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

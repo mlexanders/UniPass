@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Application", "src\UniPass.Application\UniPass.Application.csproj", "{01C6E283-6C2B-4B6C-B433-DF85F73C0A9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Client", "src\UniPass.Client\UniPass.Client.csproj", "{01C6E283-6C2B-4B6C-B433-DF85F73C0A9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Application.Web", "src\UniPass.Application.Web\UniPass.Application.Web.csproj", "{9D4DBFD8-096A-486B-8632-A65AB9AE8B0C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Client.Web", "src\UniPass.Client.Web\UniPass.Client.Web.csproj", "{9D4DBFD8-096A-486B-8632-A65AB9AE8B0C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniPass.Domain", "src\UniPass.Domain\UniPass.Domain.csproj", "{6C6F9756-2D2C-439D-8C63-D93FBD5FB05F}"
 EndProject

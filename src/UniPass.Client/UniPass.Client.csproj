@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <NoWarn>CS0168,CS1998,BL9993,CS0649,CS0436,0436</NoWarn>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+        <Authors>mlexanders</Authors>
+<!--        <StaticWebAssetBasePath>UniPass.Application.Client</StaticWebAssetBasePath>-->
+<!--        <AssemblyName>UniPass.Application</AssemblyName>-->
+<!--        <RootNamespace>UniPass.Application</RootNamespace>-->
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.2"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+        <PackageReference Include="Radzen.Blazor" Version="*"/>
+<!--        <Compile Include="../Server/Models/**/*.cs"/>-->
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\UniPass.Domain\UniPass.Domain.csproj"/>
+        <ProjectReference Include="..\UniPass.Infrastructure\UniPass.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
+      <_ContentIncludedByDefault Remove="wwwroot\favicon.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\icon-192.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+        <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.AspNetCore.Http.Features" />
+    </ItemGroup>
+    
+</Project>
