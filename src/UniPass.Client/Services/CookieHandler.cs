@@ -8,7 +8,7 @@ public class CookieHandler : DelegatingHandler
         CancellationToken cancellationToken)
     {
         request.SetBrowserRequestCredentials(BrowserRequestCredentials.Include);
-        request.Headers.Add("X-Requested-With", ["XMLHttpRequest"]);
+        // request.Headers.Add("X-Requested-With", ["XMLHttpRequest"]);
         return await base.SendAsync(request, cancellationToken);
     }
 }

@@ -17,6 +17,25 @@ public class SwaggerDefinition : AppDefinition
 
     private const string SwaggerConfig = "/swagger/v1/swagger.json";
 
+    
+    public override void ConfigureServices(WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = AppData.AppName,
+                Version = AppVersion,
+                Description = AppData.AppDescription,
+                
+            });
+
+            options.ResolveConflictingActions(x => x.First());
+        });
+    }
+    
     public override void ConfigureApplication(WebApplication app)
     {
         if (!app.Environment.IsDevelopment()) return;
@@ -36,39 +55,6 @@ public class SwaggerDefinition : AppDefinition
             settings.DefaultModelsExpandDepth(0);
             settings.DocExpansion(DocExpansion.None);
             settings.DisplayRequestDuration();
-        });
-    }
-
-    public override void ConfigureServices(WebApplicationBuilder builder)
-    {
-        builder.Services.Configure<ApiBehaviorOptions>(options => { options.SuppressModelStateInvalidFilter = true; });
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(options =>
-        {
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = AppData.AppName,
-                Version = AppVersion,
-                Description = AppData.AppDescription
-            });
-
-            options.ResolveConflictingActions(x => x.First());
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Name = "Cookie",
-                        In = ParameterLocation.Header,
-                        Reference = new OpenApiReference
-                        {
-                            Id = "Cookie",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    new List<string>()
-                }
-            });
         });
     }
 }

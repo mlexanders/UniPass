@@ -1,5 +1,6 @@
 ﻿using Calabonga.AspNetCore.AppDefinitions;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using UniPass.Domain.Application;
 
 namespace UniPass.WebApi.Definitions.Authorizations;
 
@@ -8,15 +9,8 @@ public class AuthorizationDefinition : AppDefinition
     public override void ConfigureServices(WebApplicationBuilder builder)
     {
         builder.Services
-            .AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie(
-                CookieAuthenticationDefaults.AuthenticationScheme
-            );
-
+            .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme);
 
         builder.Services.AddAuthorization();
     }
@@ -25,7 +19,7 @@ public class AuthorizationDefinition : AppDefinition
     {
         app.UseHttpsRedirection();
         app.UseRouting();
-        app.UseCors();
+        // app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
     }

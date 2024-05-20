@@ -1,15 +1,22 @@
 @using UniPass.Domain
+
+<RadzenPanelMenu>
+    <RadzenPanelMenuItem Icon="folder_open" IconColor="@Colors.Secondary" Text="Команды" Path="/teams"/>
+
+</RadzenPanelMenu>
+
+<hr class="rz-b-1" style=" width: 70%;">
+
 <RadzenPanelMenu>
     <FolderMenu Folder="Folder"/>
 </RadzenPanelMenu>
-
 
 @code
 {
     public Folder Folder = new()
     {
         Id = 0,
-        Name = "root",
+        Name = "папка",
         Folders = new List<Folder>
         {
             new()

@@ -3,7 +3,7 @@
 public class AppData
 {
     public static readonly IEnumerable<string> RoleNames = ["ApplicationUser"];
-    public static string PolicyCorsName = "UniPass.CorcPolicy";
-    public static string AppName = "UniPass";
-    public static string AppDescription { get; set; }
+    public static readonly string PolicyCorsName = "UniPass.CorsPolicy";
+    public static readonly string AppName = "UniPass";
+    public static readonly string AppDescription = "Desc";
 }
