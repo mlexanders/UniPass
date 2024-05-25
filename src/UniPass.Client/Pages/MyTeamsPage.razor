@@ -1,6 +1,62 @@
 ﻿@page "/My-Teams"
-<h3>MyTeamsPage</h3>
+@using UniPass.Infrastructure.Models
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Utils
+@using UniPass.Client.Components.Modals
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@inject TeamService TeamService
+
+
+<h3>Мои команды</h3>
+
+<RadzenDataGrid TItem="Team"
+                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                AllowPaging="true" PageSize="@_pageSize" bind-Value="_selectedTeam"
+                AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
+                SelectionMode="DataGridSelectionMode.Single"
+                Data="@_teams" LoadData="@LoadData" RowSelect="@OnSelect">
+    <Columns>
+        <RadzenDataGridColumn Property="Name" Title="Команда"/>
+    </Columns>
+</RadzenDataGrid>
 
 @code {
-    
+    private IEnumerable<Team> _teams;
+    private IList<Team> _selectedTeam;
+    private bool _isLoading;
+    private int _pageSize = 5;
+    private int _count;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPage(_pageSize, 0);
+    }
+
+    private async Task LoadData(LoadDataArgs args)
+    {
+        await LoadPage(args.Top, args.Skip);
+    }
+
+    private async Task LoadPage(int? top, int? skip)
+    {
+        try
+        {
+            var page = await TeamService.GetTeamsPage(_pageSize, top, skip);
+            _teams = page.Items;
+            _count = page.Count;
+        }
+        catch (Exception e)
+        {
+            NotificationService.ShowExceptionNotification(e);
+        }
+    }
+
+    private async Task OnSelect(Team team)
+    {
+        var result = await DialogService.OpenAsync<ShowTeamModal>($"Команда: {team.Name}",
+            new Dictionary<string, object>() { { "Team", team } },
+            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+    }
 }

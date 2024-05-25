@@ -17,4 +17,19 @@ public class TeamService : BaseCrudRequests<Team, Guid>
         var response = await Client.PostAsJsonAsync(uri, "");
         return await response.GetResult<Operation<bool>>();
     }
+    
+    public async Task<PagedList<Team>> GetTeamsPage(int pageSize, int? argsTop, int? argsSkip)
+    {
+        var skip = argsSkip ?? 0;
+        var page = skip / pageSize;
+        
+        var result =  await Read(page, argsTop ?? pageSize);
+
+        if (result.Success)
+        {
+            return result.Value;
+        }
+
+        throw new UniPassClientException(result.Message);
+    }
 }
