@@ -38,7 +38,6 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
 
         var result = new AuthenticationState(new ClaimsPrincipal(identity));
         _isAuthenticated = result.User.Identity?.IsAuthenticated ?? false;
-        Console.WriteLine($"RESULT = {result.User.Identity?.IsAuthenticated}");
         return result;
     }
     
@@ -72,8 +71,6 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
     public async Task Logout()
     {
         await _accountService.Logout();
-        var result = new AuthenticationState(new ClaimsPrincipal());
-
         NotifyAuthenticationStateChanged(GetAnonymousState());
     }
 

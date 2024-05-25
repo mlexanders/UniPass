@@ -1,0 +1,46 @@
+﻿@using UniPass.Domain
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Utils
+@using UniPass.Client.Services
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@inject KeyService KeyService
+@inject UniPassClientLogger<CreateKeyModal> UniPassClientLogger
+
+
+<KeyForm OnSubmit="@Submit"/>
+
+
+@code {
+    [Parameter] public int FolderId { get; set; }
+
+    private async Task Submit(Key key)
+    {
+        try
+        {
+            if (key is null)
+            {
+                DialogService.Close();
+                return;
+            }
+            
+            key.FolderId = FolderId;
+            var result = await KeyService.Create(key);
+            if (!result.Success)
+            {
+                NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+                return;
+            }
+
+            NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
+            DialogService.Close(key);
+        }
+        catch (Exception e)
+        {
+            NotificationService.ShowExceptionNotification(e);
+            UniPassClientLogger.Log(e);
+        }
+
+        DialogService.Close(key);
+    }
+}

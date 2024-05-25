@@ -1,105 +1,31 @@
 @using UniPass.Domain
+@using UniPass.Client.Components.Modals.Key
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Components.Modals.Folder
+@inject DialogService DialogService
+@inject FolderService FolderService
 
 <RadzenPanelMenu>
-    <RadzenPanelMenuItem Icon="folder_open" IconColor="@Colors.Secondary" Text="Команды" Path="/teams"/>
-
+    <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Команды">
+        <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Мои" Path="/my-teams"/>
+        <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Участие" Path="/teams"/>
+    </RadzenPanelMenuItem>
 </RadzenPanelMenu>
 
 <hr class="rz-b-1" style=" width: 70%;">
-
 <RadzenPanelMenu>
-    <FolderMenu Folder="Folder"/>
+    <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Личные" Path="/my-keys"/>
 </RadzenPanelMenu>
 
+<span class="material-symbols-outlined">
+
+</span>
 @code
 {
-    public Folder Folder = new()
+    private async Task ShowCreateKey()
     {
-        Id = 0,
-        Name = "папка",
-        Folders = new List<Folder>
-        {
-            new()
-            {
-                Id = 1,
-                Name = "1",
-                Folders = new List<Folder>
-                {
-                    new()
-                    {
-                        Id = 11,
-                        Name = "1.1"
-                    },
-                    new()
-                    {
-                        Id = 12,
-                        Name = "1.2"
-                    },
-                    new()
-                    {
-                        Id = 13,
-                        Name = "1.3"
-                    }
-                },
-                Keys = new List<Key>
-                {
-                    new()
-                    {
-                        Id = Guid.Parse("15F5A74F-88DC-4E64-B295-DFD2DC33D32F"),
-                        Name = "1 - первый",
-                        Password = "test"
-                    },
-                    new()
-                    {
-                        Id = Guid.Parse("25F5A74F-88DC-4E34-B295-DFD2DC33D32F"),
-                        Name = "1 - второй",
-                        Password = "test"
-                    },
-                    new()
-                    {
-                        Id = Guid.Parse("35F5A74F-88DC-4E34-B295-DFD2DC33D32F"),
-                        Name = "1 - третий",
-                        Password = "test"
-                    }
-                }
-            },
-            new()
-            {
-                Name = "2",
-                Folders = new List<Folder>
-                {
-                    new()
-                    {
-                        Name = "2.1"
-                    },
-                    new()
-                    {
-                        Name = "2.2"
-                    },
-                    new()
-                    {
-                        Name = "2.3"
-                    }
-                },
-                Keys = new List<Key>
-                {
-                    new()
-                    {
-                        Name = "2 - первый",
-                        Password = "test"
-                    },
-                    new()
-                    {
-                        Name = "2 - второй",
-                        Password = "test"
-                    },
-                    new()
-                    {
-                        Name = "3 - третий",
-                        Password = "test"
-                    }
-                }
-            }
-        }
-    };
+        var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание папки",
+            new Dictionary<string, object>() {  },
+            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+    }
 }

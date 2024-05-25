@@ -4,8 +4,8 @@
 @using UniPass.Infrastructure.ViewModels
 @attribute [AllowAnonymous]
 
-<PageTitle>Login</PageTitle>
-<RadzenText Text="Login" TextStyle="TextStyle.H5" class="mb-4" TagName="TagName.H2"/>
+<PageTitle>Вход</PageTitle>
+<RadzenText Text="Войти" TextStyle="TextStyle.H5" class="mb-4" TagName="TagName.H2"/>
 <RadzenRow>
     <RadzenColumn SizeMD="12">
         <RadzenTemplateForm TItem="LoginViewModel" Data="@_model">
@@ -13,8 +13,13 @@
             <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Info" Visible="@_infoVisible">@_info</RadzenAlert>
             <RadzenLogin
                 Username="@_model.Email" Password="@_model.Password"
-                Login="@Submit" LoginText="Войти" PasswordText="Пароль"
+                Login="@(async (a) => await Submit(a))" LoginText="Войти" PasswordText="Пароль"
                 AllowRegister="true" Register="@OnRegister"
+                RegisterText="Регистрация"
+                RememberMeText="Забыл пароль"
+                UserText="Логин"
+                ResetPasswordText="Сбросить пароль"
+                RegisterMessageText="Еще нет аккаунта?"
                 AllowResetPassword="true" ResetPassword="@OnReset"/>
         </RadzenTemplateForm>
     </RadzenColumn>

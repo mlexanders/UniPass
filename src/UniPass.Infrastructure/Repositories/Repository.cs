@@ -85,7 +85,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
 
     public Task<int> GetCount() => DbSet.CountAsync();
 
-    private IQueryable<TEntity> Include(IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[]? includes)
+    protected IQueryable<TEntity> Include(IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[]? includes)
     {
         if (includes == null) return query;
         return includes.Aggregate(query, (current, include) => current.Include(include));
@@ -105,6 +105,16 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
     public IQueryable<TEntity> GetIncludingRelatedEntities(params string[] includes)
     {
         IQueryable<TEntity> query = DbSet;
+        foreach (var propertyName in includes)
+        {
+            query = query.Include(propertyName);
+        }
+
+        return query;
+    }
+    
+    public IQueryable<TEntity> GetIncludingRelatedEntities(IQueryable<TEntity> query, params string[] includes)
+    {
         foreach (var propertyName in includes)
         {
             query = query.Include(propertyName);

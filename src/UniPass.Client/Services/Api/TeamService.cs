@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using UniPass.Client.Utils;
-using UniPass.Infrastructure;
 using UniPass.Infrastructure.Models;
+using UniPass.Infrastructure.ViewModels;
 
 namespace UniPass.Client.Services.Api;
 

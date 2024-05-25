@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using UniPass.Domain;
 using UniPass.Domain.Application;
 using UniPass.Infrastructure;
 using UniPass.Infrastructure.Models;
@@ -21,7 +23,7 @@ public static class DatabaseInitializer
     /// </summary>
     /// <param name="serviceProvider"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public static async void SeedUsers(IServiceProvider serviceProvider)
+    public static async Task SeedUsers(IServiceProvider serviceProvider)
     {
         using var scope = serviceProvider.CreateScope();
         await using var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -31,11 +33,11 @@ public static class DatabaseInitializer
         // This is should not be used when UseInMemoryDatabase()
         // It should be uncomment when using UseSqlServer() settings or any other providers.
         // -----------------------------------------------------------------------------
-        // await context!.Database.EnsureCreatedAsync();
+        await context!.Database.EnsureCreatedAsync();
         // var pending = await context.Database.GetPendingMigrationsAsync();
         // if (pending.Any())
         // {
-        //     await context!.Database.MigrateAsync();
+            await context!.Database.MigrateAsync();
         // }
 
         if (context.Users.Any()) return;
@@ -112,7 +114,7 @@ public static class DatabaseInitializer
         }
     }
 
-    public static async void SeedTeams(IServiceProvider appServices)
+    public static async Task SeedTeams(IServiceProvider appServices)
     {
         var teamsRepository = appServices.CreateScope()
             .ServiceProvider.GetRequiredService<TeamsRepository>();
@@ -214,4 +216,28 @@ public static class DatabaseInitializer
     //     await context.SaveChangesAsync();
     // }
 
+    public static void SeedKeys(IServiceProvider appServices)
+    {
+        var context = appServices.CreateScope()
+            .ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        
+        // var user = context.Users.Where(u => Emails.Contains(u.Email!))?.FirstOrDefault();
+        // var userId = user!.Id;
+        // var someKeys = new List<Key>()
+        // {
+        //     new Key() { Name = "Gmail", Login = "user1@gmail.com", Password = "password1", Url = "https://mail.google.com", Note = "Personal email", UserId = userId },
+        //     new Key() { Name = "Facebook", Login = "user2", Password = "password2", Url = "https://facebook.com", Note = "Social media", UserId = userId },
+        //     new Key() { Name = "Twitter", Login = "user3", Password = "password3", Url = "https://twitter.com", Note = "Social media", UserId = userId },
+        //     new Key() { Name = "LinkedIn", Login = "user4", Password = "password4", Url = "https://linkedin.com", Note = "Professional network", UserId = userId },
+        //     new Key() { Name = "Amazon", Login = "user5", Password = "password5", Url = "https://amazon.com", Note = "Shopping", UserId = userId },
+        //     new Key() { Name = "GitHub", Login = "user6", Password = "password6", Url = "https://github.com", Note = "Code repository", UserId = userId },
+        //     new Key() { Name = "Netflix", Login = "user7", Password = "password7", Url = "https://netflix.com", Note = "Streaming service", UserId = userId },
+        //     new Key() { Name = "Spotify", Login = "user8", Password = "password8", Url = "https://spotify.com", Note = "Music streaming", UserId = userId },
+        //     new Key() { Name = "Dropbox", Login = "user9", Password = "password9", Url = "https://dropbox.com", Note = "File storage", UserId = userId },
+        //     new Key() { Name = "Reddit", Login = "user10", Password = "password10", Url = "https://reddit.com", Note = "Forum", UserId = userId }
+        // };
+        //
+        // context.Keys.AddRange(someKeys);
+        // context.SaveChanges();
+    }
 }

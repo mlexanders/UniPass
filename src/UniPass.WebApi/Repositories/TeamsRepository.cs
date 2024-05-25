@@ -8,9 +8,7 @@ namespace UniPass.WebApi.Repositories;
 
 public class TeamsRepository : Repository<Team, Guid>
 {
-    public TeamsRepository(ApplicationDbContext dbContext) : base(dbContext)
-    {
-    }
+    public TeamsRepository(ApplicationDbContext dbContext) : base(dbContext) { }
     
     public async Task<bool> DeleteWorker(Guid teamId, Guid workerId)
     {

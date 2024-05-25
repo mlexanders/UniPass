@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using UniPass.Domain.Base;
-using UniPass.Infrastructure;
 using UniPass.Infrastructure.Repositories;
 using UniPass.Infrastructure.Services;
 using UniPass.Infrastructure.ViewModels;
@@ -16,7 +14,6 @@ public abstract class CrudController<TEntity, TKey> : Controller, ICrud<TEntity,
 {
     protected readonly Repository<TEntity, TKey> Repository;
     protected readonly  UniPassBaseLogger<CrudController<TEntity, TKey>> Logger;
-    private ICrud<TEntity, TKey> _crudImplementation;
 
     protected CrudController(Repository<TEntity, TKey> repository, UniPassBaseLogger<CrudController<TEntity, TKey>> logger)
     {
@@ -29,8 +26,10 @@ public abstract class CrudController<TEntity, TKey> : Controller, ICrud<TEntity,
     {
         try
         {
+            if (entity == null) throw new UniPassApiException("Объект не может быть пуст");
+
             var createdEntity = await Repository.Create(entity);
-            return Operation<TEntity>.Result(createdEntity);
+            return Operation<TEntity>.Result(createdEntity,"Сохранено");
         }
         catch (Exception e)
         {

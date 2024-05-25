@@ -1,4 +1,4 @@
-namespace UniPass.Infrastructure;
+namespace UniPass.Infrastructure.ViewModels;
 
 public class Operation<T>
 {

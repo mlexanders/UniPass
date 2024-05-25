@@ -1,0 +1,26 @@
+﻿@using UniPass.Client.Services
+@inject ClipboardService ClipboardService
+@inject NotificationService NotificationService
+
+
+<RadzenButton Variant="Variant.Text" Click="@OnClick" Icon="content_copy" ButtonStyle="ButtonStyle.Secondary"/>
+
+@code {
+    [Parameter] public string Value { get; set; }
+    [Parameter] public string Text { get; set; }
+    [Parameter] public EventCallback Callback { get; set; }
+
+    private NotificationMessage GetDefaultMessage() => new NotificationMessage
+    {
+        Severity = NotificationSeverity.Info,
+        Duration = 700,
+        Summary = Text ?? "Значение скопировано в буфер обмена",
+    };
+
+    private async Task OnClick()
+    {
+        await ClipboardService.WriteTextAsync(Value);
+        await Callback.InvokeAsync();
+        NotificationService.Notify(GetDefaultMessage());
+    }
+}

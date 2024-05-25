@@ -22,12 +22,13 @@ public class DbContextDefinition : AppDefinition
             // UseInMemoryDatabase - This for demo purposes only!
             // Should uninstall package "Microsoft.EntityFrameworkCore.InMemory" and install what you need.
             // For example: "Microsoft.EntityFrameworkCore.SqlServer"
-            config.UseInMemoryDatabase("DEMO");
+           
+            // config.UseInMemoryDatabase("DEMO");
 
             // uncomment line below to use UseNpgsql() or UseSqlServer(). Don't forget setup connection string in appSettings.json
             // config.UseMssql(builder.Configuration.GetConnectionString(nameof(ApplicationDbContext)));
             
-            // config.UseSqlServer(builder.Configuration.GetConnectionString("UniPass"));
+            config.UseSqlServer(builder.Configuration.GetConnectionString("UniPass"));
         });
 
 

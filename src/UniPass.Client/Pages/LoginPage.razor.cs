@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using UniPass.Client.Services;
@@ -17,6 +18,7 @@ public partial class LoginPage
     [Inject] private ApplicationAuthenticationStateProvider AuthenticationStateProvider { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private ILogger<LoginPage> _Logger { get; set; }
+    
 
     private async Task Submit(LoginArgs args)
     {
@@ -29,7 +31,7 @@ public partial class LoginPage
         try
         {
             await AuthenticationStateProvider.Login(model);
-            NavigationManager.NavigateTo("/", true);
+            NavigationManager.NavigateTo("/", false);
         }
         catch (HttpRequestException e)
         {

@@ -1,0 +1,21 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+
+<RadzenLayout style="grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body';">
+    <RadzenBody>
+        <RadzenRow class="rz-mx-auto rz-px-4 rz-pt-2 rz-pt-md-4 rz-pt-lg-6 rz-pt-xl-12 rz-pb-2 rz-pb-lg-12" Style="max-width: 1440px;">
+            <RadzenColumn Size="12">
+                @Body
+                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center"
+                             Gap="1rem" Wrap="FlexWrap.Wrap">
+                    <RadzenButton Shade="Shade.Lighter" Click="@OnClickBack" Text="На главную" ButtonStyle="ButtonStyle.Secondary" />
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenBody>
+</RadzenLayout>
+
+
+@code {
+    private void OnClickBack() => NavigationManager.NavigateTo("/");
+}

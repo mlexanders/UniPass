@@ -1,0 +1,114 @@
+﻿@page "/key"
+
+@using UniPass.Domain
+@using UniPass.Client.Utils
+
+<RadzenTemplateForm TItem="Key" Data="@_key" Submit="@(async (Key args) => { await Submit(args); })">
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenStack>
+                <RadzenFieldset Text="@Text">
+                    <RadzenStack Gap="1rem">
+
+                        <RadzenFormField Text="Название" Variant="@_variant">
+                            <ChildContent>
+                                <RadzenTextBox @bind-Value="@_key.Name" ReadOnly="@_isReadonlyForm"/>
+                            </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Text="@_requiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                            </Helper>
+                        </RadzenFormField>
+
+                        <RadzenFormField Text="URL" Variant="@_variant">
+                            <ChildContent>
+                                <RadzenTextBox @bind-Value="@_key.Url" ReadOnly="@_isReadonlyForm"/>
+                            </ChildContent>
+                            @* <Helper> *@
+                            @*     <RadzenRequiredValidator Text="@_requiredMessage" Popup=@_popup></RadzenRequiredValidator> *@
+                            @* </Helper> *@
+                        </RadzenFormField>
+
+                        <RadzenFormField Text="Логин" Variant="@_variant">
+                            <ChildContent>
+                                <RadzenTextBox @bind-Value="@_key.Login" ReadOnly="@_isReadonlyForm"/>
+                            </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Text="@_requiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                            </Helper>
+                        </RadzenFormField>
+
+                        <RadzenFormField Text="Password" Variant="@_variant">
+                            <ChildContent>
+                                <RadzenTextBox @bind-Value="@_key.Password" Visible="@(!_showPassword)" ReadOnly="@_isReadonlyForm"/>
+                                <RadzenPassword @bind-Value="@_key.Password" AutoComplete="false" Visible="@_showPassword" ReadOnly="@_isReadonlyForm"/>
+                            </ChildContent>
+                            <End>
+                                <RadzenButton Icon="@(_showPassword ? "visibility" : "visibility_off")" Click="TogglePassword" Variant="Variant.Text" Size="ButtonSize.Small"/>
+                            </End>
+                            <Helper>
+                                <RadzenRequiredValidator Text="@_requiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                            </Helper>
+                        </RadzenFormField>
+
+                        <RadzenFormField Text="Заметка" Variant="@_variant">
+                            <ChildContent>
+                                <RadzenTextArea @bind-Value="@_key.Note" ReadOnly="@_isReadonlyForm"/>
+                            </ChildContent>
+                        </RadzenFormField>
+
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-2">
+                        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Medium" Icon="save" Text="Сохранить" IsBusy="_isBusy"/>
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Filled" Size="ButtonSize.Medium" Icon="cancel" Text="Отмена" Click="@Cancel"/>
+                    </RadzenStack>
+                </RadzenFieldset>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenTemplateForm>
+
+@code {
+    private readonly Variant _variant = Variant.Filled;
+    private bool _showPassword = true;
+    private readonly bool _popup = false;
+    private bool _isBusy;
+    private bool _isReadonlyForm = false;
+    private string _requiredMessage = "Обязательно для заполенения";
+    private string _text = "Добавить новый пароль";
+    private Key _key;
+
+    [Parameter] public Key Key { get; set; } = new();
+    
+    [Parameter]
+    public string Text
+    {
+        get => _text;
+        set => _text = value;
+    }
+
+    [Parameter] public EventCallback<Key> OnSubmit { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _key = Key.Copy();
+    }
+
+    private async Task Submit(Key key)
+    {
+        _isBusy = true;
+        Key.Map(_key);
+        await OnSubmit.InvokeAsync(Key);
+        _isBusy = false;
+    }
+
+    private void TogglePassword()
+    {
+        _showPassword = !_showPassword;
+    }
+
+    private void Cancel()
+    {
+        _key.Map(Key);
+        OnSubmit.InvokeAsync();
+    }
+}

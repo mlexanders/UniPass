@@ -1,0 +1,122 @@
+﻿@using UniPass.Domain
+@using UniPass.Client.Components.Modals.Key
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Utils
+@using System.Reflection
+@inject DialogService DialogService
+@inject KeyService KeyService
+@inject NotificationService NotificationService
+
+<div class="container-fluid rz-p-1">
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenDataGrid @ref="_grid" SelectionMode="DataGridSelectionMode.Single" AllowVirtualization="true"
+                            ExpandMode="DataGridExpandMode.Single"  @bind-Value="@_selectedFolder"
+                            Data="@Folders" TItem="Folder">
+                @* RowRender="@RowRender" RowExpand="RowExpand" *@
+                
+                <Template Context="order">
+                    <RadzenBody class="rz-p-1" Style="height: 220px">
+                        <RadzenDataGrid AllowSorting="true" Data="@order.Keys" Density="Density.Compact" EmptyText="Паролей в этой папке еще нет"
+                                        SelectionMode="DataGridSelectionMode.Single" @bind-Value="@_selectedKey"
+                                        AllowVirtualization="true" TItem="Key">
+                            <Columns>
+                                <RadzenDataGridColumn Property="Name" Title="Пароли"/>
+                            </Columns>
+                        </RadzenDataGrid>
+                    </RadzenBody>
+                </Template>
+
+                <Columns>
+                    <RadzenDataGridColumn>
+                        <HeaderTemplate>
+                            <RadzenStack>
+                                <RadzenRow>
+                                        <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
+                                            <RadzenButton Size="ButtonSize.Small" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Secondary" ></RadzenButton>
+                                        </RadzenStack>
+                                        <RadzenStack AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
+                                            <RadzenText class="rz-mt-1 rz-ms-4" TextStyle="TextStyle.Subtitle2">Папки</RadzenText>
+                                        </RadzenStack>
+                                </RadzenRow>
+                            </RadzenStack>
+                            
+                        </HeaderTemplate>
+                        <Template Context="data">
+                            <RadzenStack>
+                                <RadzenRow>
+                                    <RadzenColumn Size="1" class="rz-me-1">
+                                        <RadzenIcon Icon="folder" IconColor="@Colors.Secondary"></RadzenIcon>
+                                    </RadzenColumn>
+                                    <RadzenColumn>
+                                        <RadzenStack AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
+                                            <RadzenText class="rz-mt-1" TextStyle="TextStyle.Subtitle2">@data.Name</RadzenText>
+                                        </RadzenStack>
+                                    </RadzenColumn>
+
+                                    <RadzenColumn>
+                                        <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
+                                            <RadzenButton Size="ButtonSize.Small" Icon="add" Click="@(async () => await OnCreateKey(data))"></RadzenButton>
+                                        </RadzenStack>
+                                    </RadzenColumn>
+                                </RadzenRow>
+                            </RadzenStack>
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenStack>
+                <RadzenTabs>
+                    <Tabs>
+                        <RadzenTabsItem Disabled="@(!TabsIsEnabled())" Icon="info">
+                            @if (_selectedKey != null)
+                            {
+                                <RadzenStack>
+                                    <KeyCard Key="@(_selectedKey!.FirstOrDefault() ?? new Key())"/>
+                                </RadzenStack>
+                            }
+                        </RadzenTabsItem>
+                        <RadzenTabsItem Disabled="@(!TabsIsEnabled())" Icon="edit">
+                            <KeyForm Text="Редактирование" Key="@(_selectedKey!.FirstOrDefault() ?? new Key())" OnSubmit="OnUpdateKey" ></KeyForm>
+                        </RadzenTabsItem>
+                    </Tabs>
+                </RadzenTabs>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+
+@code {
+    [Parameter] public IEnumerable<Folder> Folders { get; set; }
+
+    private IList<Folder> _selectedFolder;
+    private IList<Key> _selectedKey;
+    private RadzenDataGrid<Folder> _grid;
+    private bool TabsIsEnabled() => _selectedKey != null && _selectedKey.Count != 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Folders ??= [];
+    }
+
+    private async Task OnCreateKey(Folder folder)
+    {
+        var result = await DialogService.OpenAsync<CreateKeyModal>($"",
+            new Dictionary<string, object>() { {"FolderId", folder.Id} },
+            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+    }
+
+    private async Task OnUpdateKey(Key key)
+    {
+        var result = await KeyService.Update(key);
+
+        if (!result.Success)
+        {
+            NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+        }
+        NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
+    }
+}

@@ -18,7 +18,6 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.2" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
         <PackageReference Include="Radzen.Blazor" Version="*"/>
-<!--        <Compile Include="../Server/Models/**/*.cs"/>-->
     </ItemGroup>
 
     <ItemGroup>
@@ -41,6 +40,10 @@
         <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
       </Reference>
       <Reference Include="Microsoft.AspNetCore.Http.Features" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Components\Modals\Folder\FolderHierarchy.razor.css" />
     </ItemGroup>
     
 </Project>

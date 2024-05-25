@@ -2,10 +2,10 @@
 
 namespace UniPass.Domain;
 
-public class Folder : IEntity<int>
+public class Folder : Entity<int>
 {
     public string Name { get; set; }
-    public List<Folder> Folders { get; set; }
+    
     public List<Key> Keys { get; set; }
-    public int Id { get; set; }
+    public Guid OwnerId  { get; set; }
 }

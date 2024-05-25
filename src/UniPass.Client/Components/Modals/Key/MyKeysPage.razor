@@ -1,0 +1,45 @@
+﻿@page "/My-Keys"
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Components.Modals.Folder
+@using UniPass.Client.Utils
+@using UniPass.Domain
+
+@inject FolderService FolderService
+@inject NotificationService NotificationService
+
+@attribute [Authorize]
+
+
+<RadzenRow>
+    <RadzenColumn Size="12">
+        @if (_folders is null)
+        {
+            <ProgressBar/>
+        }
+        else
+        {
+            <FolderHierarchy Folders="@_folders"/>
+        }
+    </RadzenColumn>
+</RadzenRow>
+
+
+@code {
+    private List<Folder> _folders;
+    private Key key;
+    private Folder _selectedFolder;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await FolderService.GetAllFolders();
+        if (!result.Success)
+        {
+            NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+            _folders = [];
+            return;
+        }
+
+        _folders = result.Value;
+    }
+
+}

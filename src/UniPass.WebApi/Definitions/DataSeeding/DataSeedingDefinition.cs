@@ -5,10 +5,11 @@ namespace UniPass.WebApi.Definitions.DataSeeding;
 
 public class DataSeedingDefinition : AppDefinition
 {
-    public override void ConfigureApplication(WebApplication app)
+    public override async void ConfigureApplication(WebApplication app)
     {
-        DatabaseInitializer.SeedUsers(app.Services);
+        await DatabaseInitializer.SeedUsers(app.Services);
         
-        DatabaseInitializer.SeedTeams(app.Services);
+        await DatabaseInitializer.SeedTeams(app.Services);
+        DatabaseInitializer.SeedKeys(app.Services);
     }
 }

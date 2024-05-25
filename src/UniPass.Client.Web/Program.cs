@@ -26,11 +26,13 @@ builder.Services.AddHttpClient(
         opt => opt.BaseAddress = new Uri("https://localhost:5002/api"))
     .AddHttpMessageHandler<CookieHandler>();
 
+builder.Services.AddScoped<ClipboardService>();
 
 builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<TeamService>();
-builder.Services.AddScoped<AuthenticationStateProvider, ApplicationAuthenticationStateProvider>();
+builder.Services.AddTransient<KeyService>();
+builder.Services.AddTransient<FolderService>();
 builder.Services.AddScoped<ApplicationAuthenticationStateProvider>();
-
+builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<ApplicationAuthenticationStateProvider>());
 
 await builder.Build().RunAsync();

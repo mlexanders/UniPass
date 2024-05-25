@@ -1,0 +1,76 @@
+﻿@using UniPass.Domain
+
+
+@if (Key == null)
+{
+    <ProgressBar/>
+}
+else
+{
+    <RadzenTemplateForm TItem="Key" Data="@Key" >
+        <RadzenRow>
+            @* Class="rz-p-0 rz-p-lg-4" *@
+            @* Gap="2rem" *@
+            <RadzenColumn>
+                <RadzenStack>
+                    <RadzenFieldset Text="Пароль">
+                        <RadzenStack Gap="1rem">
+
+                            <RadzenFormField Text="Название" Variant="@_variant">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Key.Name" ReadOnly="@_isReadonlyForm"/>
+                                </ChildContent>
+                            </RadzenFormField>
+                            
+                            <RadzenFormField Text="URL" Variant="@_variant">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Key.Url" ReadOnly="@_isReadonlyForm"/>
+                                </ChildContent>
+                            </RadzenFormField>
+                            
+                            <RadzenFormField Text="Логин" Variant="@_variant">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Key.Login" ReadOnly="@_isReadonlyForm"/>
+                                </ChildContent>
+                                <End>
+                                    <CopyButton Value="@Key.Login"></CopyButton>
+                                </End>
+                            </RadzenFormField>
+
+                            <RadzenFormField Text="Password" Variant="@_variant">
+                                <ChildContent>
+                                    <RadzenTextBox @bind-Value="@Key.Password" Visible="@(!_showPassword)" ReadOnly="@_isReadonlyForm"/>
+                                    <RadzenPassword @bind-Value="@Key.Password" AutoComplete="false" Visible="@_showPassword" ReadOnly="@_isReadonlyForm"/>
+                                </ChildContent>
+                                <End>
+                                    <RadzenButton Icon="@(_showPassword ? "visibility" : "visibility_off")"
+                                                  Click="TogglePassword" Variant="Variant.Text" Size="ButtonSize.Small"/>
+                                    <CopyButton Value="@Key.Password"></CopyButton>
+                                </End>
+                            </RadzenFormField>
+
+                            <RadzenFormField Text="Заметка" Variant="@_variant">
+                                <ChildContent>
+                                    <RadzenTextArea @bind-Value="@Key.Note" ReadOnly="@_isReadonlyForm"/>
+                                </ChildContent>
+                            </RadzenFormField>
+
+                        </RadzenStack>
+                    </RadzenFieldset>
+                </RadzenStack>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenTemplateForm>
+}
+
+@code {
+    private readonly Variant _variant = Variant.Filled;
+    bool _showPassword = true;
+    private readonly bool _popup = false;
+    private readonly bool _isReadonlyForm = true;
+
+    [Parameter] public Key Key { get; set; }
+    [Parameter] public EventCallback<Key> KeyChanged { get; set; }
+
+    private void TogglePassword() => _showPassword = !_showPassword;
+}

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using UniPass.Domain;
 using UniPass.Infrastructure.Contracts;
 
 namespace UniPass.Infrastructure.Models;
@@ -10,7 +11,8 @@ public class ApplicationUser : IdentityUser<Guid>, IUser
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public virtual ICollection<Team>? Teams { get; set; }
-    public virtual ICollection<Team>? CreatedTeams { get; set; }    
+    public virtual ICollection<Team>? CreatedTeams { get; set; }   
+    public virtual ICollection<Folder>? Folders { get; set; }    
+    // public virtual ICollection<Key>? Keys { get; set; }    
     // public virtual ICollection<ApplicationUserTeam>? ApplicationUserTeam { get; set; }
-
 }
