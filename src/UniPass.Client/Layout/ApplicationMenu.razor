@@ -1,7 +1,6 @@
 @using UniPass.Domain
-@using UniPass.Client.Components.Modals.Key
 @using UniPass.Client.Services.Api
-@using UniPass.Client.Components.Modals.Folder
+@using UniPass.Client.Components.FolderComponents
 @inject DialogService DialogService
 @inject FolderService FolderService
 
@@ -10,12 +9,12 @@
         <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Мои" Path="/my-teams"/>
         <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Участие" Path="/teams"/>
     </RadzenPanelMenuItem>
+    
+    <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Личные" Path="/my-keys"/>
+    
 </RadzenPanelMenu>
 
-<hr class="rz-b-1" style=" width: 70%;">
-<RadzenPanelMenu>
-    <RadzenPanelMenuItem IconColor="@Colors.Secondary" Text="Личные" Path="/my-keys"/>
-</RadzenPanelMenu>
+@* <hr class="rz-b-1" style=" width: 70%;"> *@
 
 <span class="material-symbols-outlined">
 
@@ -24,7 +23,7 @@
 {
     private async Task ShowCreateKey()
     {
-        var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание папки",
+        var result = await DialogService.OpenAsync<FolderForm>($"Создание папки",
             new Dictionary<string, object>() {  },
             new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
     }

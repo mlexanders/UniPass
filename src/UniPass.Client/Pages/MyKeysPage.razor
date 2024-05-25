@@ -1,7 +1,7 @@
 ﻿@page "/My-Keys"
 @using UniPass.Client.Services.Api
-@using UniPass.Client.Components.Modals.Folder
 @using UniPass.Client.Utils
+@using UniPass.Client.Components.FolderComponents
 @using UniPass.Domain
 
 @inject FolderService FolderService
@@ -18,7 +18,7 @@
         }
         else
         {
-            <FolderHierarchy Folders="@_folders"/>
+            <FolderManage Folders="@_folders"/>
         }
     </RadzenColumn>
 </RadzenRow>
@@ -26,20 +26,22 @@
 
 @code {
     private List<Folder> _folders;
-    private Key key;
-    private Folder _selectedFolder;
 
     protected override async Task OnInitializedAsync()
     {
+        _folders = await GetFolders();
+    }
+
+    private async Task<List<Folder>> GetFolders()
+    {
         var result = await FolderService.GetAllFolders();
-        if (!result.Success)
+        if (result.Success)
         {
-            NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
-            _folders = [];
-            return;
+            return result.Value;
         }
 
-        _folders = result.Value;
+        NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+        return [];
     }
 
 }

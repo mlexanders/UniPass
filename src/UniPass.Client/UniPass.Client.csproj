@@ -45,5 +45,19 @@
     <ItemGroup>
       <None Remove="Components\Modals\Folder\FolderHierarchy.razor.css" />
     </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Components\FolderComponents\CreateFolderModal.razor" />
+      <AdditionalFiles Include="Components\FolderComponents\FolderForm.razor" />
+      <AdditionalFiles Include="Components\KeyComponents\CreateKeyModal.razor" />
+      <AdditionalFiles Include="Components\KeyComponents\KeyCard.razor" />
+      <AdditionalFiles Include="Components\KeyComponents\KeyForm.razor" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\Modals\Key\CreateKeyModal.razor" />
+      <UpToDateCheckInput Remove="Components\Modals\Key\KeyCard.razor" />
+      <UpToDateCheckInput Remove="Components\Modals\Key\KeyForm.razor" />
+    </ItemGroup>
     
 </Project>

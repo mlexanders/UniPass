@@ -1,0 +1,42 @@
+﻿@using UniPass.Client.Services.Api
+@using UniPass.Client.Utils
+@using UniPass.Client.Services
+@using UniPass.Domain
+@inject DialogService DialogService
+@inject NotificationService NotificationService
+@inject FolderService FolderService
+@inject UniPassClientLogger<CreateFolderModal> UniPassClientLogger
+
+<FolderForm OnSubmit="@Submit"/>
+
+@code {
+
+    private async Task Submit(Folder folder)
+    {
+        try
+        {
+            if (folder is null)
+            {
+                DialogService.Close();
+                return;
+            }
+            
+            var result = await FolderService.Create(folder);
+            if (!result.Success)
+            {
+                NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+                return;
+            }
+
+            NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
+            DialogService.Close(result.Value);
+        }
+        catch (Exception e)
+        {
+            NotificationService.ShowExceptionNotification(e);
+            UniPassClientLogger.Log(e);
+        }
+
+        DialogService.Close(folder);
+    }
+}
