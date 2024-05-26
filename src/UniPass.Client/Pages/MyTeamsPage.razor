@@ -2,13 +2,28 @@
 @using UniPass.Infrastructure.Models
 @using UniPass.Client.Services.Api
 @using UniPass.Client.Utils
-@using UniPass.Client.Components.Modals
+@using UniPass.Client.Components.TeamsComponents
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject TeamService TeamService
 
 
-<h3>Мои команды</h3>
+
+<RadzenRow AlignItems="AlignItems.Center" Class="rz-mb-2" Gap="0.3rem">
+
+    <RadzenColumn>
+        <h3>Мои команды</h3>
+    </RadzenColumn>
+        
+    <RadzenColumn>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
+            <RadzenButton Icon="add_circle_outline" Text="Добавить" Click="@OnCreateTeam" Variant="Variant.Flat"/>
+        </RadzenStack>
+    </RadzenColumn>
+
+</RadzenRow>
+
+
 
 <RadzenDataGrid TItem="Team"
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
@@ -27,8 +42,7 @@
     private bool _isLoading;
     private int _pageSize = 5;
     private int _count;
-
-
+    
     protected override async Task OnInitializedAsync()
     {
         await LoadPage(_pageSize, 0);
@@ -58,5 +72,10 @@
         var result = await DialogService.OpenAsync<ShowTeamModal>($"Команда: {team.Name}",
             new Dictionary<string, object>() { { "Team", team } },
             new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+    }
+
+    private async Task OnCreateTeam()
+    {
+        // T
     }
 }

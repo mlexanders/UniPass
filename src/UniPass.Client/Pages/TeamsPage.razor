@@ -1,6 +1,5 @@
 ﻿@page "/teams"
 @using UniPass.Infrastructure.Models
-@using UniPass.Client.Components.Modals
 @using UniPass.Client.Services.Api
 @inject DialogService DialogService
 @if (_teams is null)
@@ -81,8 +80,8 @@ else
     
     private async Task OnSelect(Team team)
     {
-        var result = await DialogService.OpenAsync<ShowTeamModal>($"Команда: {team.Name}",
-            new Dictionary<string, object>() { { "Team", team } },
-            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+        // var result = await DialogService.OpenAsync<ShowTeamModal>($"Команда: {team.Name}",
+        //     new Dictionary<string, object>() { { "Team", team } },
+        //     new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
     }
 }

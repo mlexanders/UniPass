@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UniPass.Infrastructure.Contracts;
 using UniPass.Infrastructure.Models;
 using UniPass.Infrastructure.Services;
 using UniPass.Infrastructure.ViewModels;
@@ -10,14 +12,17 @@ using UniPass.WebApi.Utils;
 namespace UniPass.WebApi.Controllers;
 
 [Authorize]
-public class TeamController : CrudController<Team, Guid>
+public class TeamController : CrudController<Team, Guid>, ITeamService
 {
     private readonly TeamsRepository _repository;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public TeamController(TeamsRepository repository, UniPassBaseLogger<CrudController<Team, Guid>> logger)
+    public TeamController(TeamsRepository repository, UserManager<ApplicationUser> userManager,
+        UniPassBaseLogger<CrudController<Team, Guid>> logger)
         : base(repository, logger)
     {
         _repository = repository;
+        _userManager = userManager;
     }
 
     public override async Task<Operation<PagedList<Team>>> Read(int page, int pageSize)
@@ -25,7 +30,7 @@ public class TeamController : CrudController<Team, Guid>
         try
         {
             var userId = User.GetUserId();
-            
+
             var query = Repository
                 .Read(e => e.OrganizerId.Equals(userId))
                 .Skip(page * pageSize)
@@ -33,7 +38,7 @@ public class TeamController : CrudController<Team, Guid>
 
             var count = await Repository.GetCount();
             var items = await query.ToListAsync();
-            
+
             var pagedList = new PagedList<Team>(page, pageSize, count, items);
 
             return Operation<PagedList<Team>>.Result(pagedList);
@@ -52,13 +57,16 @@ public class TeamController : CrudController<Team, Guid>
         {
             var userId = User.GetUserId();
 
-            var desiredEntity = includes is null ? Repository.GetFirstOrDefault(e => e.Id!.Equals(key) && e.OrganizerId.Equals(userId)) :
-                await Repository.GetIncludingRelatedEntities(includes).FirstOrDefaultAsync(e => e.Id!.Equals(key) && e.OrganizerId.Equals(userId));
-            
+            var desiredEntity = includes is null
+                ? Repository.GetFirstOrDefault(e => e.Id!.Equals(key) && e.OrganizerId.Equals(userId))
+                : await Repository.GetIncludingRelatedEntities(includes)
+                    .FirstOrDefaultAsync(e => e.Id!.Equals(key) && e.OrganizerId.Equals(userId));
+
             if (desiredEntity is null)
             {
                 return Operation<Team>.Error($"Запись не была найдена с id={key}");
             }
+
             return Operation<Team>.Result(desiredEntity);
         }
         catch (Exception e)
@@ -70,21 +78,21 @@ public class TeamController : CrudController<Team, Guid>
     }
 
     [HttpPost("deleteWorker")]
-    public async Task<Operation<bool>> DeleteWorker([FromQuery] Guid teamId, [FromQuery] Guid workerId)
+    public async Task<Operation<Team>> DeleteWorker([FromQuery] Guid teamId, [FromQuery] Guid workerId)
     {
         try
         {
-            var success = await _repository.DeleteWorker(teamId, workerId);
-            return Operation<bool>.Result(success);
+            var updatedTeam = await _repository.DeleteWorker(teamId, workerId);
+            return Operation<Team>.Result(updatedTeam);
         }
         catch (UniPassApiException e)
         {
-            return Operation<bool>.Error(e.Message);
+            return Operation<Team>.Error(e.Message);
         }
         catch (Exception e)
         {
             Logger.Log(e);
-            return Operation<bool>.Error(e.Message);
+            return Operation<Team>.Error(e.Message);
         }
     }
 
@@ -101,6 +109,50 @@ public class TeamController : CrudController<Team, Guid>
             }
 
             var result = await _repository.Update(entity);
+            return Operation<Team>.Result(result);
+        }
+        catch (UniPassApiException e)
+        {
+            return Operation<Team>.Error(e.Message);
+        }
+        catch (Exception e)
+        {
+            Logger.Log(e);
+            return Operation<Team>.Error(e.Message);
+        }
+    }
+
+    [HttpPost("addWorker")]
+    public async Task<Operation<Team>> AddWorker([FromQuery] Guid teamId, [FromQuery] string email)
+    {
+        try
+        {
+            var userId = User.GetUserId();
+
+            var user = await _userManager.FindByEmailAsync(email);
+            var team = _repository
+                .GetFirstOrDefault(t => t.Id.Equals(teamId) && t.OrganizerId.Equals(userId),
+                    disableTracking: false,
+                    include: t => t.Workers!);
+
+            if (user is null | team is null)
+            {
+                throw new UniPassApiException("Пользвоатель или команда не была найдена");
+            }
+
+            if (team!.Workers?.Any() != true)
+            {
+                team!.Workers = [user];
+            }
+            else
+            {
+                team.Workers.Add(user!);
+            }
+
+            var result = await _repository.Update(team);
+            
+            //TODO: NOTIFICATION _ SERVICE
+            
             return Operation<Team>.Result(result);
         }
         catch (UniPassApiException e)

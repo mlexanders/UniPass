@@ -14,7 +14,7 @@ public interface IRepository<TEntity, TKey> where TEntity : Entity<TKey>
 
     TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Expression<Func<TEntity, object>>? include = null,
         bool disableTracking = true,
         bool ignoreQueryFilters = false,
         bool ignoreAutoIncludes = false);

@@ -105,6 +105,11 @@
 
     private async Task OnUpdateKey(Key key)
     {
+        if (key is null )
+        {
+            return;
+        }
+        
         var result = await KeyService.Update(key);
 
         if (!result.Success)

@@ -8,29 +8,34 @@ namespace UniPass.WebApi.Repositories;
 
 public class TeamsRepository : Repository<Team, Guid>
 {
-    public TeamsRepository(ApplicationDbContext dbContext) : base(dbContext) { }
-    
-    public async Task<bool> DeleteWorker(Guid teamId, Guid workerId)
+    public TeamsRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
-        var findedTeam = await DbSet.Include(i => i.Workers)
+    }
+
+    public async Task<Team> DeleteWorker(Guid teamId, Guid workerId)
+    {
+        var updatedTeam = await DbSet
+            .Include(i => i.Workers)
             .FirstOrDefaultAsync(t => t.Id.Equals(teamId));
-        if (findedTeam is null )
+        
+        if (updatedTeam is null)
         {
             throw new UniPassApiException($"Команда не найдена");
         }
-        else if (findedTeam.Workers is null)
+        else if (updatedTeam.Workers is null)
         {
             throw new UniPassApiException($"Список участников пуст");
         }
-        
-        var user = findedTeam.Workers.FirstOrDefault(u => u.Id.Equals(workerId));
-        if (user is null )
+
+        var user = updatedTeam.Workers.FirstOrDefault(u => u.Id.Equals(workerId));
+        if (user is null)
         {
             throw new UniPassApiException($"Пользователь не найден");
         }
-        
-        var result = findedTeam.Workers.Remove(user);
+
+        var result = updatedTeam.Workers.Remove(user);
         await DbContext.SaveChangesAsync();
-        return result;
+        
+        return result ? updatedTeam : throw new UniPassApiException("Пользователь не был удален");
     }
 }

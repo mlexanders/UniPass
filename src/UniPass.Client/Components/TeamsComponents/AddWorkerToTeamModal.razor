@@ -1,0 +1,72 @@
+﻿@using UniPass.Infrastructure.Models
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Utils
+@inject DialogService DialogService
+@inject TeamService TeamService
+@inject NotificationService NotificationService
+
+<RadzenTemplateForm Data="_email" Submit="@(async (string args) => { await Submit(args); })">
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenStack>
+                <RadzenFieldset Text=@($"Введите email пользователя")>
+                    <RadzenStack Gap="1rem">
+                        <RadzenFormField Text="email" Variant="@_variant">
+                            <ChildContent>
+                                <RadzenTextBox @bind-Value="@_email"/>
+                            </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Text="@RequiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                                <RadzenEmailValidator Text="Введите email" щ></RadzenEmailValidator>
+                            </Helper>
+                        </RadzenFormField>
+                    </RadzenStack>
+                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="1rem" Class="rz-mt-8 rz-mb-2">
+                        <RadzenButton ButtonType="ButtonType.Submit" Size="ButtonSize.Medium" Icon="save" Text="Добавить" IsBusy="_isBusy"/>
+                        <RadzenButton ButtonStyle="ButtonStyle.Light" Variant="Variant.Filled" Size="ButtonSize.Medium" Icon="cancel" Text="Отмена" Click="@Cancel"/>
+                    </RadzenStack>
+                </RadzenFieldset>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenTemplateForm>
+
+@code {
+    private readonly Variant _variant = Variant.Filled;
+    private readonly bool _popup = false;
+    private bool _isBusy;
+    private const string RequiredMessage = "Обязательно для заполенения";
+    private string _email;
+
+    [Parameter] public Team Team { get; set; }
+
+    private async Task Submit(string email)
+    {
+        _isBusy = true;
+        try
+        {
+            var result = await TeamService.AddWorker(Team.Id, email);
+            if (!result.Success)
+            {
+                NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+            }
+
+            NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
+            DialogService.Close(result.Value);
+        }
+        catch (Exception e)
+        {
+            NotificationService.ShowExceptionNotification(e);
+        }
+        finally
+        {
+            _isBusy = false;
+        }
+    }
+
+    private async Task Cancel()
+    {
+        DialogService.Close();
+        // await OnSubmit.InvokeAsync();
+    }
+}

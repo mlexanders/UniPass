@@ -41,7 +41,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
 
     public TEntity? GetFirstOrDefault(Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Expression<Func<TEntity, object>>? include = null,
         bool disableTracking = true,
         bool ignoreQueryFilters = false,
         bool ignoreAutoIncludes = false)
@@ -50,7 +50,7 @@ public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntit
 
         if (disableTracking) query = query.AsNoTracking();
 
-        if (include is not null) query = include(query);
+        if (include is not null) query = query.Include(include);
 
         if (predicate is not null) query = query.Where(predicate);
 

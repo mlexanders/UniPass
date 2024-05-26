@@ -19,12 +19,3 @@
 <span class="material-symbols-outlined">
 
 </span>
-@code
-{
-    private async Task ShowCreateKey()
-    {
-        var result = await DialogService.OpenAsync<FolderForm>($"Создание папки",
-            new Dictionary<string, object>() {  },
-            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
-    }
-}
