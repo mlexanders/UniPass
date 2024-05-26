@@ -1,0 +1,77 @@
+﻿@using UniPass.Domain
+
+
+<RadzenDataGrid SelectionMode="DataGridSelectionMode.Single" AllowVirtualization="true"
+                ExpandMode="DataGridExpandMode.Single"  @bind-Value="@_selectedFolder"
+                Data="@Folders" TItem="Folder">
+    <Template Context="order">
+        <RadzenBody class="rz-p-1" Style="height: 220px">
+            <RadzenDataGrid AllowSorting="true" Data="@order.Keys" Density="Density.Compact" EmptyText="Паролей в этой папке еще нет"
+                            SelectionMode="DataGridSelectionMode.Single" ValueChanged="SelectedKeyChanged"
+                            AllowVirtualization="true" TItem="Key">
+                <Columns>
+                    <RadzenDataGridColumn Property="Name" Title="Пароли"/>
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenBody>
+    </Template>
+
+    <Columns>
+        <RadzenDataGridColumn>
+            <HeaderTemplate>
+                <RadzenStack>
+                    <RadzenRow>
+                        <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
+                            <RadzenButton Size="ButtonSize.Small" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary"
+                                          Click="@(async () => await FolderCreate())" ></RadzenButton>
+                        </RadzenStack>
+                        <RadzenStack AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
+                            <RadzenText class="rz-mt-1 rz-ms-4" TextStyle="TextStyle.Subtitle2">Папки</RadzenText>
+                        </RadzenStack>
+                    </RadzenRow>
+                </RadzenStack>
+                        
+            </HeaderTemplate>
+            <Template Context="folder">
+                <RadzenStack>
+                    <RadzenRow>
+                        <RadzenColumn Size="1" class="rz-me-1">
+                            <RadzenIcon Icon="folder" IconColor="@Colors.Secondary"></RadzenIcon>
+                        </RadzenColumn>
+                        <RadzenColumn>
+                            <RadzenStack AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
+                                <RadzenText class="rz-mt-1" TextStyle="TextStyle.Subtitle2">@folder.Name</RadzenText>
+                            </RadzenStack>
+                        </RadzenColumn>
+
+                        <RadzenColumn>
+                            <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
+                                <RadzenButton Size="ButtonSize.Small" Icon="add" Click="@(async () => await CreateKey(folder))"></RadzenButton>
+                            </RadzenStack>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </RadzenStack>
+            </Template>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+@code {
+    [Parameter] public IEnumerable<Folder> Folders { get; set; }
+    [Parameter] public EventCallback OnFolderCreate { get; set; }
+    [Parameter] public EventCallback<Folder> OnKeyCreate { get; set; }
+    [Parameter] public IList<Key> SelectedKey { get; set; }
+    [Parameter] public EventCallback<IList<Key>> SelectedKeyChanged { get; set; }
+    
+    private IList<Folder> _selectedFolder;
+
+    private async Task CreateKey(Folder folder)
+    {
+        await OnKeyCreate.InvokeAsync(folder);
+    }
+
+    private async Task FolderCreate()
+    {
+        await OnFolderCreate.InvokeAsync();
+    }
+}

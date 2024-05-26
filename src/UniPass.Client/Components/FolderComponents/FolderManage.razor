@@ -9,60 +9,7 @@
 <div class="container-fluid rz-p-1">
     <RadzenRow>
         <RadzenColumn>
-            <RadzenDataGrid @ref="_grid" SelectionMode="DataGridSelectionMode.Single" AllowVirtualization="true"
-                            ExpandMode="DataGridExpandMode.Single"  @bind-Value="@_selectedFolder"
-                            Data="@Folders" TItem="Folder">
-                <Template Context="order">
-                    <RadzenBody class="rz-p-1" Style="height: 220px">
-                        <RadzenDataGrid AllowSorting="true" Data="@order.Keys" Density="Density.Compact" EmptyText="Паролей в этой папке еще нет"
-                                        SelectionMode="DataGridSelectionMode.Single" @bind-Value="@_selectedKey"
-                                        AllowVirtualization="true" TItem="Key">
-                            <Columns>
-                                <RadzenDataGridColumn Property="Name" Title="Пароли"/>
-                            </Columns>
-                        </RadzenDataGrid>
-                    </RadzenBody>
-                </Template>
-
-                <Columns>
-                    <RadzenDataGridColumn>
-                        <HeaderTemplate>
-                            <RadzenStack>
-                                <RadzenRow>
-                                        <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
-                                            <RadzenButton Size="ButtonSize.Small" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary"
-                                                          Click="@(async () => await OnCreateFolder())" ></RadzenButton>
-                                        </RadzenStack>
-                                        <RadzenStack AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
-                                            <RadzenText class="rz-mt-1 rz-ms-4" TextStyle="TextStyle.Subtitle2">Папки</RadzenText>
-                                        </RadzenStack>
-                                </RadzenRow>
-                            </RadzenStack>
-                            
-                        </HeaderTemplate>
-                        <Template Context="data">
-                            <RadzenStack>
-                                <RadzenRow>
-                                    <RadzenColumn Size="1" class="rz-me-1">
-                                        <RadzenIcon Icon="folder" IconColor="@Colors.Secondary"></RadzenIcon>
-                                    </RadzenColumn>
-                                    <RadzenColumn>
-                                        <RadzenStack AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
-                                            <RadzenText class="rz-mt-1" TextStyle="TextStyle.Subtitle2">@data.Name</RadzenText>
-                                        </RadzenStack>
-                                    </RadzenColumn>
-
-                                    <RadzenColumn>
-                                        <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
-                                            <RadzenButton Size="ButtonSize.Small" Icon="add" Click="@(async () => await OnCreateKey(data))"></RadzenButton>
-                                        </RadzenStack>
-                                    </RadzenColumn>
-                                </RadzenRow>
-                            </RadzenStack>
-                        </Template>
-                    </RadzenDataGridColumn>
-                </Columns>
-            </RadzenDataGrid>
+            <FolderList Folders="Folders" OnFolderCreate="@OnFolderCreate" OnKeyCreate="@OnCreateKey" @bind-SelectedKey="@_selectedKey" ></FolderList>
         </RadzenColumn>
         <RadzenColumn>
             <RadzenStack>
@@ -77,7 +24,7 @@
                             }
                         </RadzenTabsItem>
                         <RadzenTabsItem Disabled="@(!TabsIsEnabled())" Icon="edit">
-                            <KeyForm Text="Редактирование" Key="@(_selectedKey!.FirstOrDefault() ?? new Key())" OnSubmit="OnUpdateKey" ></KeyForm>
+                            <KeyForm Text="Редактирование" Key="@(_selectedKey!.FirstOrDefault() ?? new Key())" OnSubmit="OnUpdateKey"></KeyForm>
                         </RadzenTabsItem>
                     </Tabs>
                 </RadzenTabs>
@@ -89,27 +36,33 @@
 
 @code {
     [Parameter] public IEnumerable<Folder> Folders { get; set; }
-    
-    private IList<Folder> _selectedFolder;
+
     private IList<Key> _selectedKey;
-    private RadzenDataGrid<Folder> _grid;
     private bool TabsIsEnabled() => _selectedKey != null && _selectedKey.Count != 0;
 
 
     private async Task OnCreateKey(Folder folder)
     {
         var result = await DialogService.OpenAsync<CreateKeyModal>($"",
-            new Dictionary<string, object>() { {"FolderId", folder.Id} },
+            new Dictionary<string, object>() { { "FolderId", folder.Id } },
             new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+    }
+
+    private async Task OnFolderCreate()
+    {
+        var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание новой папки",
+            new Dictionary<string, object>() { },
+            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+
+        if (result is null) return;
+
+        Folders = Folders.Append(result as Folder);
     }
 
     private async Task OnUpdateKey(Key key)
     {
-        if (key is null )
-        {
-            return;
-        }
-        
+        if (key is null) return;
+
         var result = await KeyService.Update(key);
 
         if (!result.Success)
@@ -117,17 +70,8 @@
             NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
             return;
         }
+
         NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
     }
 
-    private async Task OnCreateFolder()
-    {
-        var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание новой папки",
-            new Dictionary<string, object>() {  },
-            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
-        
-        if (result is null) return;
-        
-        Folders = Folders.Append(result as Folder);
-    }
 }
