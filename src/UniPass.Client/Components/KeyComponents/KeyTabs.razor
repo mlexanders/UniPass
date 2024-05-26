@@ -1,0 +1,26 @@
+﻿@using UniPass.Domain
+<RadzenTabs>
+    <Tabs>
+        <RadzenTabsItem Disabled="@(!TabsIsEnabled())" Icon="info">
+            @if (SelectedKey != null)
+            {
+                <RadzenStack>
+                    <KeyCard Key="@SelectedKey"/>
+                </RadzenStack>
+            }
+        </RadzenTabsItem>
+        <RadzenTabsItem Visible="EditingEnabled" Disabled="@(!TabsIsEnabled())" Icon="edit">
+            <KeyForm Text="Редактирование" Key="@SelectedKey" OnSubmit="@OnKeyUpdate"></KeyForm>
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
+
+
+@code {
+    [Parameter] public EventCallback<Key> OnKeyUpdate { get; set; }
+    [Parameter] public Key SelectedKey { get; set; }
+    // [Parameter] public EventCallback<Key> SelectedKeyChanged { get; set; }
+    [Parameter] public bool EditingEnabled { get; set; }
+
+    private bool TabsIsEnabled() => SelectedKey != null;
+}

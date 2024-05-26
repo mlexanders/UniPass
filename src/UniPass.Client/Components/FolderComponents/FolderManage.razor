@@ -9,25 +9,11 @@
 <div class="container-fluid rz-p-1">
     <RadzenRow>
         <RadzenColumn>
-            <FolderList Folders="Folders" OnFolderCreate="@OnFolderCreate" OnKeyCreate="@OnCreateKey" @bind-SelectedKey="@_selectedKey" ></FolderList>
+            <FolderList Folders="Folders" OnFolderCreate="@OnFolderCreate" OnKeyCreate="@OnCreateKey" @bind-SelectedKey="@_selectedKey"></FolderList>
         </RadzenColumn>
         <RadzenColumn>
             <RadzenStack>
-                <RadzenTabs>
-                    <Tabs>
-                        <RadzenTabsItem Disabled="@(!TabsIsEnabled())" Icon="info">
-                            @if (_selectedKey != null)
-                            {
-                                <RadzenStack>
-                                    <KeyCard Key="@(_selectedKey!.FirstOrDefault() ?? new Key())"/>
-                                </RadzenStack>
-                            }
-                        </RadzenTabsItem>
-                        <RadzenTabsItem Disabled="@(!TabsIsEnabled())" Icon="edit">
-                            <KeyForm Text="Редактирование" Key="@(_selectedKey!.FirstOrDefault() ?? new Key())" OnSubmit="OnUpdateKey"></KeyForm>
-                        </RadzenTabsItem>
-                    </Tabs>
-                </RadzenTabs>
+                <KeyTabs OnKeyUpdate="@OnUpdateKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true"></KeyTabs>
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
@@ -35,17 +21,23 @@
 
 
 @code {
-    [Parameter] public IEnumerable<Folder> Folders { get; set; }
+    [Parameter] public List<Folder> Folders { get; set; }
 
     private IList<Key> _selectedKey;
     private bool TabsIsEnabled() => _selectedKey != null && _selectedKey.Count != 0;
-
 
     private async Task OnCreateKey(Folder folder)
     {
         var result = await DialogService.OpenAsync<CreateKeyModal>($"",
             new Dictionary<string, object>() { { "FolderId", folder.Id } },
             new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+        if (result is null) return;
+
+        var newKey = result as Key;
+        
+        //Update keyList inside folder
+        var updatedFolder = Folders.FirstOrDefault(f => f.Id.Equals(folder.Id));
+        updatedFolder!.Keys.Add(newKey);
     }
 
     private async Task OnFolderCreate()
@@ -56,7 +48,7 @@
 
         if (result is null) return;
 
-        Folders = Folders.Append(result as Folder);
+        Folders.Add(result as Folder);
     }
 
     private async Task OnUpdateKey(Key key)
@@ -73,5 +65,4 @@
 
         NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
     }
-
 }
