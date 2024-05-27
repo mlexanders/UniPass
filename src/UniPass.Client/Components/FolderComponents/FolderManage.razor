@@ -6,14 +6,15 @@
 @inject KeyService KeyService
 @inject NotificationService NotificationService
 
+
 <div class="container-fluid rz-p-1">
     <RadzenRow>
         <RadzenColumn>
-            <FolderList Folders="Folders" OnFolderCreate="@OnFolderCreate" OnKeyCreate="@OnCreateKey" @bind-SelectedKey="@_selectedKey"></FolderList>
+            <FolderList Folders="Folders" OnFolderCreate="@CreateFolder" OnKeyCreate="@CreateKey" @bind-SelectedKey="@_selectedKey"></FolderList>
         </RadzenColumn>
         <RadzenColumn>
             <RadzenStack>
-                <KeyTabs OnKeyUpdate="@OnUpdateKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true"></KeyTabs>
+                <KeyTabs OnKeyUpdate="@UpdateKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true"></KeyTabs>
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
@@ -22,11 +23,9 @@
 
 @code {
     [Parameter] public List<Folder> Folders { get; set; }
-
     private IList<Key> _selectedKey;
-    private bool TabsIsEnabled() => _selectedKey != null && _selectedKey.Count != 0;
 
-    private async Task OnCreateKey(Folder folder)
+    private async Task CreateKey(Folder folder)
     {
         var result = await DialogService.OpenAsync<CreateKeyModal>($"",
             new Dictionary<string, object>() { { "FolderId", folder.Id } },
@@ -37,10 +36,17 @@
         
         //Update keyList inside folder
         var updatedFolder = Folders.FirstOrDefault(f => f.Id.Equals(folder.Id));
-        updatedFolder!.Keys.Add(newKey);
+        if (updatedFolder!.Keys?.Any() == true)
+        {
+            updatedFolder!.Keys.Add(newKey);
+        }
+        else
+        {
+            updatedFolder.Keys = [newKey];
+        }
     }
 
-    private async Task OnFolderCreate()
+    private async Task CreateFolder()
     {
         var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание новой папки",
             new Dictionary<string, object>() { },
@@ -51,7 +57,7 @@
         Folders.Add(result as Folder);
     }
 
-    private async Task OnUpdateKey(Key key)
+    private async Task UpdateKey(Key key)
     {
         if (key is null) return;
 

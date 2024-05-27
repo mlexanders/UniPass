@@ -13,13 +13,16 @@
             <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Info" Visible="@_infoVisible">@_info</RadzenAlert>
             <RadzenLogin
                 Username="@_model.Email" Password="@_model.Password"
-                Login="@(async (a) => await Submit(a))" LoginText="Войти" PasswordText="Пароль"
+                Login="@(async (a) => await Submit(a))" 
                 AllowRegister="true" Register="@OnRegister"
-                RegisterText="Регистрация"
-                RememberMeText="Забыл пароль"
+                LoginText="Войти" PasswordText="Пароль"
                 UserText="Логин"
                 ResetPasswordText="Сбросить пароль"
+                RememberMeText="Забыл пароль"
                 RegisterMessageText="Еще нет аккаунта?"
+                RegisterText="Регистрация"
+                UserRequired="Введите email"
+                PasswordRequired="Введите пароль"
                 AllowResetPassword="true" ResetPassword="@OnReset"/>
         </RadzenTemplateForm>
     </RadzenColumn>

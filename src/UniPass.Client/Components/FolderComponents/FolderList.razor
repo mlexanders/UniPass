@@ -7,7 +7,7 @@
     <Template Context="folder">
         <RadzenBody class="rz-p-1" Style="height: 220px">
             <RadzenDataGrid Data="@folder.Keys" Density="Density.Compact" EmptyText="Паролей в этой папке еще нет"
-                            SelectionMode="DataGridSelectionMode.Single" ValueChanged="SelectedKeyChanged"
+                            SelectionMode="DataGridSelectionMode.Single" ValueChanged="@OnChange"
                             AllowVirtualization="true" TItem="Key">
                 <Columns>
                     <RadzenDataGridColumn Property="Name" Title="Пароли"/>
@@ -73,5 +73,11 @@
     private async Task FolderCreate()
     {
         await OnFolderCreate.InvokeAsync();
+    }
+
+    private async Task OnChange(IList<Key> arg)
+    {
+        SelectedKey = arg;
+        await SelectedKeyChanged.InvokeAsync(SelectedKey);
     }
 }

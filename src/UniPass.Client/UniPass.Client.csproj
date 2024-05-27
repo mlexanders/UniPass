@@ -59,9 +59,5 @@
       <UpToDateCheckInput Remove="Components\Modals\Key\KeyCard.razor" />
       <UpToDateCheckInput Remove="Components\Modals\Key\KeyForm.razor" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Components\Modals\" />
-    </ItemGroup>
     
 </Project>

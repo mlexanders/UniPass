@@ -141,4 +141,24 @@ public class FolderController : CrudController<Folder, int>, IFolderService
             return Operation<List<Folder>>.Error(e.Message);
         }
     }
+
+    [HttpGet("GetByTeamId/{teamId:guid}")]
+    public async Task<Operation<List<Folder>>> GetByTeamId(Guid teamId)
+    {
+        
+        try
+        {
+            var folders = await _repository
+                .ReadByOwnerId(User.GetUserId(), f => teamId.Equals(f.TeamId))
+                .Include(f => f.Keys)
+                .ToListAsync();
+            
+            return Operation<List<Folder>>.Result(folders);
+        }
+        catch (Exception e)
+        {
+            Logger.Log(e);
+            return Operation<List<Folder>>.Error(e.Message);
+        }
+    }
 }

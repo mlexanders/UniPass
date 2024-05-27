@@ -10,6 +10,7 @@
 <FolderForm OnSubmit="@Submit"/>
 
 @code {
+    [Parameter] public Guid? TeamId { get; set; }
 
     private async Task Submit(Folder folder)
     {
@@ -19,6 +20,11 @@
             {
                 DialogService.Close();
                 return;
+            }
+
+            if (TeamId != null) 
+            {
+                folder.TeamId = TeamId.Value;
             }
             
             var result = await FolderService.Create(folder);

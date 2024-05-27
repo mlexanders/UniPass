@@ -3,6 +3,9 @@
 @using UniPass.Client.Services.Api
 @using UniPass.Client.Utils
 @using UniPass.Client.Components.TeamsComponents
+@using UniPass.Client.Components.FolderComponents
+@using UniPass.Client.Components.KeyComponents
+@using UniPass.Domain
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject TeamService TeamService
@@ -23,31 +26,34 @@
 
 </RadzenRow>
 
-<RadzenDataGrid TItem="Team"
-                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                AllowPaging="true" PageSize="@_pageSize" bind-Value="_selectedTeam"
-                AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
-                SelectionMode="DataGridSelectionMode.Single"
-                Data="@_teams" LoadData="@LoadData" RowSelect="@ShowTeamModal">
-    <Template Context="team">
-        
-        <RadzenBody class="rz-p-1" Style="height: 220px">
-            <RadzenDataGrid AllowSorting="true" Data="@(team.Folders!)" Density="Density.Default"
-                            EmptyText="Папок еще нет"
-                            SelectionMode="DataGridSelectionMode.Single" 
-                            AllowVirtualization="true" >
+
+<div class="container-fluid rz-p-1">
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenDataGrid TItem="Team"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            AllowPaging="true" PageSize="@_pageSize" bind-Value="_selectedTeam"
+                            AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
+                            SelectionMode="DataGridSelectionMode.Single"
+                            Data="@_teams" LoadData="@LoadData" RowSelect="@ShowTeamModal">
+                <Template Context="team">
+                        <MyTeamsFolderList Team="team" @bind-SelectedKey="_selectedKey"/>
+                </Template>
+                
                 <Columns>
-                    <RadzenDataGridColumn Property="Name" Title="папки"/>
+                    <RadzenDataGridColumn Property="Name" Title="Команды"/>
                 </Columns>
             </RadzenDataGrid>
-        </RadzenBody>
-    </Template>
-    
-    
-    <Columns>
-        <RadzenDataGridColumn Property="Name" Title="Команда"/>
-    </Columns>
-</RadzenDataGrid>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenStack>
+                <KeyTabs OnKeyUpdate="@UpdateKey" SelectedKey="@(_selectedKey.FirstOrDefault() ?? new())" EditingEnabled="true"></KeyTabs>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
+
+
 
 @code {
     private IEnumerable<Team> _teams;
@@ -55,6 +61,9 @@
     private bool _isLoading;
     private int _pageSize = 5;
     private int _count;
+    private IList<Key> _selectedKey;
+    // public Key GetSelectedKey() => _selectedKey.Any() ? _selectedKey.First() : new Key();
+    
     
     protected override async Task OnInitializedAsync()
     {
@@ -82,6 +91,7 @@
 
     private async Task ShowTeamModal(Team team)
     {
+        var a = 13 - 2;
         var result = await DialogService.OpenAsync<TeamModal>($"Команда: {team.Name}",
             new Dictionary<string, object>() { { "Team", team } },
             new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
@@ -93,4 +103,10 @@
             new Dictionary<string, object>() { },
             new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
     }
+
+    private async Task UpdateKey(Key arg)
+    {
+        // TODO: immplement
+    }
+
 }

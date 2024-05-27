@@ -1,0 +1,72 @@
+﻿@using UniPass.Infrastructure.Models
+@using UniPass.Client.Services.Api
+@using UniPass.Domain
+@using UniPass.Client.Components.KeyComponents
+@inject FolderService FolderService
+@inject DialogService DialogService
+
+@if (_folders is null)
+{
+    
+    <ProgressBar/>
+}
+else
+{
+    <FolderList Folders="_folders" SelectedKeyChanged="@OnChange" OnFolderCreate="@CreateFolder" OnKeyCreate="CreateKey" ></FolderList>
+}
+
+
+@code {
+    private List<Folder> _folders;
+    [Parameter] public IList<Key> SelectedKey { get; set; }
+    [Parameter] public EventCallback<IList<Key>> SelectedKeyChanged { get; set; }
+
+    [Parameter] public Team Team { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await FolderService.GetByTeamId(Team.Id);
+        if (result.Success)
+        {
+            _folders = result.Value;
+        }
+    }
+
+    private async Task CreateFolder()
+    {
+        var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание новой папки",
+            new Dictionary<string, object>() { { "TeamId", Team.Id } },
+            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+
+        if (result is null) return;
+
+        _folders.Add(result as Folder);
+    }
+
+    private async Task CreateKey(Folder folder)
+    {
+        var result = await DialogService.OpenAsync<CreateKeyModal>($"",
+            new Dictionary<string, object>() { { "FolderId", folder.Id } },
+            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+        if (result is null) return;
+
+        var newKey = result as Key; 
+
+        //Update keyList inside folder
+        var updatedFolder = _folders.FirstOrDefault(f => f.Id.Equals(folder.Id));
+        if (updatedFolder!.Keys?.Any() == true)
+        {
+            updatedFolder!.Keys.Add(newKey);
+        }
+        else
+        {
+            updatedFolder.Keys = [newKey];
+        }
+    }
+
+    private async Task OnChange(IList<Key> key)
+    {
+        SelectedKey = key;
+        await SelectedKeyChanged.InvokeAsync(key);
+    }
+}

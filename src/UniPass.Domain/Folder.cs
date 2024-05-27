@@ -8,4 +8,5 @@ public class Folder : Entity<int>
     
     public List<Key> Keys { get; set; }
     public Guid OwnerId  { get; set; }
+    public Guid? TeamId  { get; set; }
 }

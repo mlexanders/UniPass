@@ -10,7 +10,10 @@
             }
         </RadzenTabsItem>
         <RadzenTabsItem Visible="EditingEnabled" Disabled="@(!TabsIsEnabled())" Icon="edit">
-            <KeyForm Text="Редактирование" Key="@SelectedKey" OnSubmit="@OnKeyUpdate"></KeyForm>
+            @if (SelectedKey != null)
+            {
+                <KeyForm Text="Редактирование" Key="@SelectedKey" OnSubmit="@OnKeyUpdate"></KeyForm>
+            }
         </RadzenTabsItem>
     </Tabs>
 </RadzenTabs>

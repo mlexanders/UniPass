@@ -36,7 +36,8 @@ public class ApplicationDbContext : DbContextBase
 
         builder.Entity<Team>()
             .HasMany<Folder>(t => t.Folders)
-            .WithOne();
+            .WithOne()
+            .HasForeignKey(f => f.TeamId);
         
         base.OnModelCreating(builder);
     }
