@@ -23,14 +23,27 @@
 
 </RadzenRow>
 
-
-
 <RadzenDataGrid TItem="Team"
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 AllowPaging="true" PageSize="@_pageSize" bind-Value="_selectedTeam"
                 AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
                 SelectionMode="DataGridSelectionMode.Single"
-                Data="@_teams" LoadData="@LoadData" RowSelect="@OnSelect">
+                Data="@_teams" LoadData="@LoadData" RowSelect="@ShowTeamModal">
+    <Template Context="team">
+        
+        <RadzenBody class="rz-p-1" Style="height: 220px">
+            <RadzenDataGrid AllowSorting="true" Data="@(team.Folders!)" Density="Density.Default"
+                            EmptyText="Папок еще нет"
+                            SelectionMode="DataGridSelectionMode.Single" 
+                            AllowVirtualization="true" >
+                <Columns>
+                    <RadzenDataGridColumn Property="Name" Title="папки"/>
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenBody>
+    </Template>
+    
+    
     <Columns>
         <RadzenDataGridColumn Property="Name" Title="Команда"/>
     </Columns>
@@ -67,15 +80,17 @@
         }
     }
 
-    private async Task OnSelect(Team team)
+    private async Task ShowTeamModal(Team team)
     {
-        var result = await DialogService.OpenAsync<ShowTeamModal>($"Команда: {team.Name}",
+        var result = await DialogService.OpenAsync<TeamModal>($"Команда: {team.Name}",
             new Dictionary<string, object>() { { "Team", team } },
             new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
     }
 
     private async Task OnCreateTeam()
     {
-        // T
+        var result = await DialogService.OpenAsync<CreateTeamModal>($"Создание новой команды",
+            new Dictionary<string, object>() { },
+            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
     }
 }

@@ -1,7 +1,8 @@
 ﻿@using UniPass.Domain
 @using UniPass.Client.Utils
+@using UniPass.Infrastructure.Models
 
-<RadzenTemplateForm TItem="Folder" Data="@_folder" Submit="@(async (Folder args) => { await Submit(args); })">
+<RadzenTemplateForm TItem="Team" Data="@_team" Submit="@(async (Team args) => { await Submit(args); })">
     <RadzenRow>
         <RadzenColumn>
             <RadzenStack>
@@ -9,7 +10,7 @@
 
                     <RadzenFormField Text="Название" Variant="@_variant">
                         <ChildContent>
-                            <RadzenTextBox @bind-Value="@_folder.Name" ReadOnly="@IsReadonlyForm"/>
+                            <RadzenTextBox @bind-Value="@_team.Name" ReadOnly="@IsReadonlyForm"/>
                         </ChildContent>
                         <Helper>
                             <RadzenRequiredValidator Text="@RequiredMessage" Popup=@_popup></RadzenRequiredValidator>
@@ -32,9 +33,9 @@
     private bool _isBusy;
     private const bool IsReadonlyForm = false;
     private const string RequiredMessage = "Обязательно для заполенения";
-    private Folder _folder;
+    private Team _team;
 
-    [Parameter] public Folder Folder { get; set; } = new();
+    [Parameter] public Team Team { get; set; } = new();
     
     // [Parameter]
     // public string Text
@@ -43,21 +44,21 @@
     //     set => _text = value;
     // }
 
-    [Parameter] public EventCallback<Folder> OnSubmit { get; set; }
+    [Parameter] public EventCallback<Team> OnSubmit { get; set; }
 
-    protected override void OnInitialized() => _folder = Folder.Copy();
+    protected override void OnInitialized() => _team = Team.Copy();
 
-    private async Task Submit(Folder folder)
+    private async Task Submit(Team team)
     {
         _isBusy = true;
-        Folder.Map(_folder);
-        await OnSubmit.InvokeAsync(Folder);
+        Team.Map(_team);
+        await OnSubmit.InvokeAsync(Team);
         _isBusy = false;
     }
 
     private void Cancel()
     {
-        _folder.Map(Folder);
+        _team.Map(Team);
         OnSubmit.InvokeAsync();
     }
 }

@@ -33,6 +33,10 @@ public class ApplicationDbContext : DbContextBase
             .HasOne<ApplicationUser>()
             .WithMany(u => u.Folders)
             .HasForeignKey(f => f.OwnerId);
+
+        builder.Entity<Team>()
+            .HasMany<Folder>(t => t.Folders)
+            .WithOne();
         
         base.OnModelCreating(builder);
     }

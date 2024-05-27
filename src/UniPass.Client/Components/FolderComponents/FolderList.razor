@@ -4,9 +4,9 @@
 <RadzenDataGrid SelectionMode="DataGridSelectionMode.Single" AllowVirtualization="true"
                 ExpandMode="DataGridExpandMode.Single"  @bind-Value="@_selectedFolder"
                 Data="@Folders" TItem="Folder">
-    <Template Context="order">
+    <Template Context="folder">
         <RadzenBody class="rz-p-1" Style="height: 220px">
-            <RadzenDataGrid AllowSorting="true" Data="@order.Keys" Density="Density.Compact" EmptyText="Паролей в этой папке еще нет"
+            <RadzenDataGrid Data="@folder.Keys" Density="Density.Compact" EmptyText="Паролей в этой папке еще нет"
                             SelectionMode="DataGridSelectionMode.Single" ValueChanged="SelectedKeyChanged"
                             AllowVirtualization="true" TItem="Key">
                 <Columns>

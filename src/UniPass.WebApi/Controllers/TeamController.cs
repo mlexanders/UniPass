@@ -25,6 +25,15 @@ public class TeamController : CrudController<Team, Guid>, ITeamService
         _userManager = userManager;
     }
 
+    public override Task<Operation<Team>> Create(Team entity)
+    {
+        if (entity is not null)
+        {
+            entity.OrganizerId = User.GetUserId();
+        }
+        return base.Create(entity);
+    }
+
     public override async Task<Operation<PagedList<Team>>> Read(int page, int pageSize)
     {
         try

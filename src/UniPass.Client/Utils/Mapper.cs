@@ -1,4 +1,5 @@
 ﻿using UniPass.Domain;
+using UniPass.Infrastructure.Models;
 
 namespace UniPass.Client.Utils;
 
@@ -50,5 +51,28 @@ public static class Mapper
         folder.Name = source.Name;
         folder.OwnerId = source.OwnerId;
         folder.Keys = source.Keys;
+    }
+    
+    public static Team Copy(this Team team)
+    {
+        var result = new Team
+        {
+            Id = team.Id,
+            Name = team.Name,
+            OrganizerId = team.OrganizerId,
+            Organizer = team.Organizer,
+            Workers = team.Workers,
+
+        };
+        return result;
+    }
+    
+    public static void Map(this Team team, Team source)
+    {
+        team.Id = source.Id;
+        team.Name = source.Name;
+        team.OrganizerId = source.OrganizerId;
+        team.Organizer = source.Organizer;
+        team.Workers = source.Workers;
     }
 }
