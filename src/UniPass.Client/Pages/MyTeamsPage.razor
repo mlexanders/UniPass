@@ -11,16 +11,15 @@
 @inject TeamService TeamService
 
 
-
 <RadzenRow AlignItems="AlignItems.Center" Class="rz-mb-2" Gap="0.3rem">
 
     <RadzenColumn>
-        <h3>Мои команды</h3>
+        <RadzenButton Icon="add_circle_outline" Text="Добавить" Click="@OnCreateTeam" Variant="Variant.Flat"/>
     </RadzenColumn>
-        
+
     <RadzenColumn>
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem">
-            <RadzenButton Icon="add_circle_outline" Text="Добавить" Click="@OnCreateTeam" Variant="Variant.Flat"/>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+            <h3>Мои команды</h3>
         </RadzenStack>
     </RadzenColumn>
 
@@ -37,9 +36,9 @@
                             SelectionMode="DataGridSelectionMode.Single"
                             Data="@_teams" LoadData="@LoadData" RowSelect="@ShowTeamModal">
                 <Template Context="team">
-                        <MyTeamsFolderList Team="team" @bind-SelectedKey="_selectedKey"/>
+                    <MyTeamsFolderList Team="team" @bind-SelectedKey="_selectedKey"/>
                 </Template>
-                
+
                 <Columns>
                     <RadzenDataGridColumn Property="Name" Title="Команды"/>
                 </Columns>
@@ -47,12 +46,11 @@
         </RadzenColumn>
         <RadzenColumn>
             <RadzenStack>
-                <KeyTabs OnKeyUpdate="@UpdateKey" SelectedKey="@(_selectedKey.FirstOrDefault() ?? new())" EditingEnabled="true"></KeyTabs>
+                <KeyTabs OnKeyUpdate="@UpdateKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true"></KeyTabs>
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
 </div>
-
 
 
 @code {
@@ -63,8 +61,8 @@
     private int _count;
     private IList<Key> _selectedKey;
     // public Key GetSelectedKey() => _selectedKey.Any() ? _selectedKey.First() : new Key();
-    
-    
+
+
     protected override async Task OnInitializedAsync()
     {
         await LoadPage(_pageSize, 0);
