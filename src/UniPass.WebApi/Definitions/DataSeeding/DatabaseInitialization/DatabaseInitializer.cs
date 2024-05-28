@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using UniPass.Domain;
 using UniPass.Domain.Application;
 using UniPass.Infrastructure;
 using UniPass.Infrastructure.Models;
@@ -37,7 +35,7 @@ public static class DatabaseInitializer
         // var pending = await context.Database.GetPendingMigrationsAsync();
         // if (pending.Any())
         // {
-            await context!.Database.MigrateAsync();
+        //     await context!.Database.MigrateAsync();
         // }
 
         if (context.Users.Any()) return;
@@ -177,6 +175,8 @@ public static class DatabaseInitializer
                 OrganizerId = user!.Id,
             },
         };
+
+        if (context.Teams.Any()) return;
         
          context.Teams.AddRange(teams);
          await context.SaveChangesAsync();
@@ -220,12 +220,12 @@ public static class DatabaseInitializer
     {
         var context = appServices.CreateScope()
             .ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        
+        //
         // var user = context.Users.Where(u => Emails.Contains(u.Email!))?.FirstOrDefault();
         // var userId = user!.Id;
         // var someKeys = new List<Key>()
         // {
-        //     new Key() { Name = "Gmail", Login = "user1@gmail.com", Password = "password1", Url = "https://mail.google.com", Note = "Personal email", UserId = userId },
+        //     new Key() { Name = "Gmail", Login = "user1@gmail.com", Password = "password1", Url = "https://mail.google.com", Note = "Personal email", O = userId },
         //     new Key() { Name = "Facebook", Login = "user2", Password = "password2", Url = "https://facebook.com", Note = "Social media", UserId = userId },
         //     new Key() { Name = "Twitter", Login = "user3", Password = "password3", Url = "https://twitter.com", Note = "Social media", UserId = userId },
         //     new Key() { Name = "LinkedIn", Login = "user4", Password = "password4", Url = "https://linkedin.com", Note = "Professional network", UserId = userId },
@@ -237,6 +237,10 @@ public static class DatabaseInitializer
         //     new Key() { Name = "Reddit", Login = "user10", Password = "password10", Url = "https://reddit.com", Note = "Forum", UserId = userId }
         // };
         //
+        // if (expr)
+        // {
+        //     
+        // }
         // context.Keys.AddRange(someKeys);
         // context.SaveChanges();
     }

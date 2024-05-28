@@ -1,87 +1,101 @@
-﻿@page "/teams"
+﻿@page "/Teams"
 @using UniPass.Infrastructure.Models
 @using UniPass.Client.Services.Api
+@using UniPass.Client.Utils
+@using UniPass.Client.Components.TeamsComponents
+@using UniPass.Client.Components.FolderComponents
+@using UniPass.Client.Components.KeyComponents
+@using UniPass.Domain
 @inject DialogService DialogService
-@if (_teams is null)
-{
-    <ProgressBar/>
-}
+@inject NotificationService NotificationService
+@inject TeamService TeamService
 
-else
-{
-    
-    <RadzenText>Все команды</RadzenText>
 
-    <RadzenDataGrid TItem="Team"
-                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                    AllowPaging="true"  PageSize="@_pageSize"
-                    AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
-                    SelectionMode="DataGridSelectionMode.Single"
-                    Data="@_teams" LoadData="@LoadData" RowSelect="@OnSelect"
-                    >
-        <Columns>
-            <RadzenDataGridColumn Property="Name" Title="Команда"/>
-        </Columns>
-    </RadzenDataGrid>
-}
+<RadzenRow AlignItems="AlignItems.Center" Class="rz-mb-2" Gap="0.3rem">
 
+    @* <RadzenColumn> *@
+    @*     <RadzenButton Icon="add_circle_outline" Text="Добавить" Click="@OnCreateTeam" Variant="Variant.Flat"/> *@
+    @* </RadzenColumn> *@
+
+    <RadzenColumn>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem">
+            <h3>Участие в командах</h3>
+        </RadzenStack>
+    </RadzenColumn>
+
+</RadzenRow>
+
+
+<div class="container-fluid rz-p-1">
+    <RadzenRow>
+        <RadzenColumn>
+            <RadzenDataGrid TItem="Team"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                            AllowPaging="true" PageSize="@_pageSize" bind-Value="_selectedTeam"
+                            AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
+                            SelectionMode="DataGridSelectionMode.Single"
+                            Data="@_teams" LoadData="@LoadData" RowSelect="@ShowTeamModal">
+                <Template Context="team">
+                    <MyTeamsFolderList Team="team" @bind-SelectedKey="_selectedKey"/>
+                </Template>
+
+                <Columns>
+                    <RadzenDataGridColumn Property="Name" Title="Команды"/>
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenStack>
+                <KeyTabs OnKeyUpdate="@UpdateKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="false"/>
+            </RadzenStack>
+        </RadzenColumn>
+    </RadzenRow>
+</div>
 
 
 @code {
     private IEnumerable<Team> _teams;
     private IList<Team> _selectedTeam;
-    private string _message = "";
     private bool _isLoading;
     private int _pageSize = 5;
     private int _count;
+    private IList<Key> _selectedKey;
 
-    [Inject] private TeamService TeamService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        await GetTeamsPage(_pageSize, 0);
+        await LoadPage(_pageSize, 0);
     }
-    
-    
+
     private async Task LoadData(LoadDataArgs args)
     {
-        await GetTeamsPage(args.Top, args.Skip);
+        await LoadPage(args.Top, args.Skip);
     }
 
-
-    private async Task GetTeamsPage(int? argsTop, int? argsSkip)
+    private async Task LoadPage(int? top, int? skip)
     {
-        _isLoading = true;
-
-        var skip = argsSkip ?? 0;
-        var page = skip / _pageSize;
         try
         {
-            var result = await TeamService.Read(page, argsTop ?? _pageSize);
-            if (!result.Success)
-            {
-                _message = result.Message;
-                return;
-            }
-
-            var pagedList = result.Value;
-            var teams = pagedList.Items ?? [];
-            
-            _teams = teams.AsODataEnumerable();
-            _count = pagedList.Count;
+            var page = await TeamService.GetTeamsPageAsParticipant(_pageSize, top, skip);
+            _teams = page.Items;
+            _count = page.Count;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            NotificationService.ShowExceptionNotification(e);
         }
+    }
 
-        _isLoading = false;
+    private async Task ShowTeamModal(Team team)
+    {
+        var a = 13 - 2;
+        var result = await DialogService.OpenAsync<TeamModal>($"Команда: {team.Name}",
+            new Dictionary<string, object>() { { "Team", team } },
+            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
     }
     
-    private async Task OnSelect(Team team)
+    private async Task UpdateKey(Key arg)
     {
-        // var result = await DialogService.OpenAsync<ShowTeamModal>($"Команда: {team.Name}",
-        //     new Dictionary<string, object>() { { "Team", team } },
-        //     new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+        // TODO: immplement
     }
 }

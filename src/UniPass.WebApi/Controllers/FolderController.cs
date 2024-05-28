@@ -142,18 +142,29 @@ public class FolderController : CrudController<Folder, int>, IFolderService
         }
     }
 
-    [HttpGet("GetByTeamId/{teamId:guid}")]
-    public async Task<Operation<List<Folder>>> GetByTeamId(Guid teamId)
+    [HttpGet("GetByTeamId/{teamId:guid}/{isOwner:bool}")]
+    public async Task<Operation<List<Folder>>> GetByTeamId(Guid teamId, bool isOwner = true)
     {
         
         try
         {
-            var folders = await _repository
-                .ReadByOwnerId(User.GetUserId(), f => teamId.Equals(f.TeamId))
-                .Include(f => f.Keys)
-                .ToListAsync();
+            if (isOwner)
+            {
+                var folders = await _repository
+                    .ReadByOwnerId(User.GetUserId(), f => teamId.Equals(f.TeamId))
+                    .Include(f => f.Keys)
+                    .ToListAsync();
             
-            return Operation<List<Folder>>.Result(folders);
+                return Operation<List<Folder>>.Result(folders);
+            }
+            else
+            {
+                var folders = await _repository
+                    .ReadAsParticipant(User.GetUserId(), teamId)
+                    .Include(f => f.Keys)
+                    .ToListAsync();
+                return Operation<List<Folder>>.Result(folders);
+            }
         }
         catch (Exception e)
         {

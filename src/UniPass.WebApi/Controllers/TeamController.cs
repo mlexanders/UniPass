@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using UniPass.Infrastructure;
 using UniPass.Infrastructure.Contracts;
 using UniPass.Infrastructure.Models;
 using UniPass.Infrastructure.Services;
@@ -15,14 +15,14 @@ namespace UniPass.WebApi.Controllers;
 public class TeamController : CrudController<Team, Guid>, ITeamService
 {
     private readonly TeamsRepository _repository;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ApplicationUserStore _userStore;
 
-    public TeamController(TeamsRepository repository, UserManager<ApplicationUser> userManager,
+    public TeamController(TeamsRepository repository, ApplicationUserStore userStore,
         UniPassBaseLogger<CrudController<Team, Guid>> logger)
         : base(repository, logger)
     {
         _repository = repository;
-        _userManager = userManager;
+        _userStore = userStore;
     }
 
     public override Task<Operation<Team>> Create(Team entity)
@@ -31,6 +31,7 @@ public class TeamController : CrudController<Team, Guid>, ITeamService
         {
             entity.OrganizerId = User.GetUserId();
         }
+
         return base.Create(entity);
     }
 
@@ -101,6 +102,7 @@ public class TeamController : CrudController<Team, Guid>, ITeamService
         catch (Exception e)
         {
             Logger.Log(e);
+            Response.StatusCode = StatusCodes.Status500InternalServerError;
             return Operation<Team>.Error(e.Message);
         }
     }
@@ -127,6 +129,7 @@ public class TeamController : CrudController<Team, Guid>, ITeamService
         catch (Exception e)
         {
             Logger.Log(e);
+            Response.StatusCode = StatusCodes.Status500InternalServerError;
             return Operation<Team>.Error(e.Message);
         }
     }
@@ -138,7 +141,7 @@ public class TeamController : CrudController<Team, Guid>, ITeamService
         {
             var userId = User.GetUserId();
 
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userStore.FindByEmailAsync(email);
             var team = _repository
                 .GetFirstOrDefault(t => t.Id.Equals(teamId) && t.OrganizerId.Equals(userId),
                     disableTracking: false,
@@ -159,9 +162,9 @@ public class TeamController : CrudController<Team, Guid>, ITeamService
             }
 
             var result = await _repository.Update(team);
-            
+
             //TODO: NOTIFICATION _ SERVICE
-            
+
             return Operation<Team>.Result(result);
         }
         catch (UniPassApiException e)
@@ -171,7 +174,39 @@ public class TeamController : CrudController<Team, Guid>, ITeamService
         catch (Exception e)
         {
             Logger.Log(e);
+            Response.StatusCode = StatusCodes.Status500InternalServerError;
             return Operation<Team>.Error(e.Message);
+        }
+    }
+
+    [HttpGet("ReadAsParticipant/{page:int}/{pageSize:int}")]
+    public async Task<Operation<PagedList<Team>>> ReadAsParticipant(int page, int pageSize)
+    {
+        
+        try
+        {
+            var userId = User.GetUserId();
+            var user = await _userStore.Users
+                .FirstOrDefaultAsync(u => u.Id.Equals(userId));
+
+            var teams = await _repository
+                .Read(t => t.Workers!.Contains(user!))
+                .Include(t => t.Folders)!
+                .ThenInclude(f => f.Keys)
+                .Skip(page * pageSize).Take(pageSize)
+                .ToListAsync();
+
+            var count = teams.Count;
+            
+            var pagedList = new PagedList<Team>(page, pageSize, count, teams);
+
+            return Operation<PagedList<Team>>.Result(pagedList);
+        }
+        catch (Exception e)
+        {
+            Logger.Log(e);
+            Response.StatusCode = StatusCodes.Status500InternalServerError;
+            return Operation<PagedList<Team>>.Error(e.Message);
         }
     }
 }

@@ -40,5 +40,27 @@ public class TeamService : BaseCrudRequests<Team, Guid>, ITeamService
         var response = await Client.PostAsJsonAsync(uri, "");
         return await response.GetResult<Operation<Team>>();
     }
+
+    public async Task<PagedList<Team>> GetTeamsPageAsParticipant(int pageSize, int? argsTop, int? argsSkip)
+    {
+        var skip = argsSkip ?? 0;
+        var page = skip / pageSize;
+        
+        var result =  await ReadAsParticipant(page, argsTop ?? pageSize);
+
+        if (result.Success)
+        {
+            return result.Value;
+        }
+
+        throw new UniPassClientException(result.Message);
+    }
+
+    public async Task<Operation<PagedList<Team>>> ReadAsParticipant(int page, int pageSize)
+    {
+        var uri = $"{_basePath}/{nameof(Team)}/ReadAsParticipant/{page}/{pageSize}";
+        var response = await Client.GetAsync(uri);
+        return await response.GetResult<Operation<PagedList<Team>>>();
+    }
 }
 

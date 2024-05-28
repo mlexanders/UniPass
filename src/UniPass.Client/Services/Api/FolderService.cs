@@ -17,9 +17,10 @@ public class FolderService : BaseCrudRequests<Folder, int>, IFolderService
         return await response.GetResult<Operation<List<Folder>>>();
     }
 
-    public async Task<Operation<List<Folder>>> GetByTeamId(Guid teamId)
+
+    public async Task<Operation<List<Folder>>> GetByTeamId(Guid teamId, bool isOwner = true)
     {
-        var path = $"{_basePath}/{nameof(Folder)}/GetByTeamId/{teamId}";
+        var path = $"{_basePath}/{nameof(Folder)}/GetByTeamId/{teamId}/{isOwner}";
         
         var response = await Client.GetAsync(path);
         return await response.GetResult<Operation<List<Folder>>>();

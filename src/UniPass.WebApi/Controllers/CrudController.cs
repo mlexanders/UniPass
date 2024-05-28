@@ -71,7 +71,6 @@ public abstract class CrudController<TEntity, TKey> : Controller, ICrud<TEntity,
             }
 
             await Repository.Delete(deletingEntity);
-            Response.StatusCode = StatusCodes.Status500InternalServerError;
             return Operation<OperationInfo>.Result("Запись успешно удалена");
         }
         catch (Exception e)

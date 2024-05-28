@@ -36,7 +36,7 @@
                             SelectionMode="DataGridSelectionMode.Single"
                             Data="@_teams" LoadData="@LoadData" RowSelect="@ShowTeamModal">
                 <Template Context="team">
-                    <MyTeamsFolderList Team="team" @bind-SelectedKey="_selectedKey"/>
+                    <MyTeamsFolderList Team="team" @bind-SelectedKey="_selectedKey" IsOwner="true"/>
                 </Template>
 
                 <Columns>

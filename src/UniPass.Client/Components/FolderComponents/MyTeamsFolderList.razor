@@ -20,11 +20,13 @@ else
     [Parameter] public IList<Key> SelectedKey { get; set; }
     [Parameter] public EventCallback<IList<Key>> SelectedKeyChanged { get; set; }
 
+    [Parameter] public bool IsOwner { get; set; }
     [Parameter] public Team Team { get; set; }
+    [Parameter] public Task<List<Folder>> LoadData { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var result = await FolderService.GetByTeamId(Team.Id);
+        var result = await FolderService.GetByTeamId(Team.Id, IsOwner);
         if (result.Success)
         {
             _folders = result.Value;
