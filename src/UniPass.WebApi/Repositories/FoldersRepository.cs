@@ -1,8 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using UniPass.Domain;
 using UniPass.Infrastructure;
-using UniPass.Infrastructure.Repositories;
+using UniPass.Infrastructure.Models;
 
 namespace UniPass.WebApi.Repositories;
 

@@ -32,7 +32,7 @@ public class DbContextDefinition : AppDefinition
         });
 
 
-        builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+        builder.Services.AddIdentity<ApplicationUserModel, ApplicationRole>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
@@ -44,7 +44,7 @@ public class DbContextDefinition : AppDefinition
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddUserStore<ApplicationUserStore>()
             .AddRoleStore<ApplicationRoleStore>()
-            .AddUserManager<UserManager<ApplicationUser>>()
+            .AddUserManager<UserManager<ApplicationUserModel>>()
             .AddDefaultTokenProviders();
 
         builder.Services.AddTransient<ApplicationUserStore>();

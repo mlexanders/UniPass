@@ -2,10 +2,10 @@
 
 namespace UniPass.Infrastructure.Contracts;
 
-public interface IAccountService
+public interface IAccount
 {
     Task<Operation<bool>> Login(LoginViewModel model);
     Task<ApplicationAuthenticationState> GetState();
-    Task<Operation<UserViewModel>> GetCurrentUser();
+    Task<Operation<UserModelViewModel>> GetCurrentUser();
     Task<Operation<bool>> Logout();
 }

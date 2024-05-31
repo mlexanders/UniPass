@@ -1,6 +1,5 @@
 ﻿@using UniPass.Infrastructure.Models
 @using UniPass.Client.Services.Api
-@using UniPass.Domain
 @using UniPass.Client.Components.KeyComponents
 @inject FolderService FolderService
 @inject DialogService DialogService
@@ -11,7 +10,7 @@
 }
 else
 {
-    <FolderList Folders="_folders" SelectedKeyChanged="@OnChange" OnFolderCreate="@CreateFolder" OnKeyCreate="CreateKey" ></FolderList>
+    <FolderList Folders="_folders" SelectedKeyChanged="@OnChange" OnFolderCreate="@CreateFolder" OnKeyCreate="CreateKey" OnFolderDelete="@OnFolderDelete"/>
 }
 
 
@@ -19,6 +18,7 @@ else
     private List<Folder> _folders;
     [Parameter] public IList<Key> SelectedKey { get; set; }
     [Parameter] public EventCallback<IList<Key>> SelectedKeyChanged { get; set; }
+    [Parameter] public EventCallback<Folder> OnFolderDelete { get; set; }
 
     [Parameter] public bool IsOwner { get; set; }
     [Parameter] public Team Team { get; set; }

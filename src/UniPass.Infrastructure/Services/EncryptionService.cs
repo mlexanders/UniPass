@@ -4,7 +4,7 @@ using UniPass.Infrastructure.Models;
 
 namespace UniPass.Infrastructure.Services;
 
-public static class EncryptionService // : IEncryptionService
+public static class EncryptionService
 {
     private static readonly byte[] EncryptionKey = Convert.FromBase64String("RYOOciUTSn48zDqf5wdm/c394rDwpdPVmjvv1cAgbf8=");
 
@@ -27,16 +27,16 @@ public static class EncryptionService // : IEncryptionService
             Decrypt(key);
         }
     }
-    
-    public static void Encrypt(Key? key)
+
+    private static void Encrypt(Key? key)
     {
         if (key is null)  return;
 
         key.Login = Encrypt(key.Login);
         key.Password = Encrypt(key.Password);
     }
-    
-    public static void Decrypt(Key? key)
+
+    private static void Decrypt(Key? key)
     {
         if (key is null)  return;
 
@@ -44,7 +44,7 @@ public static class EncryptionService // : IEncryptionService
         key.Password = Decrypt(key.Password);
     }
 
-    public static string Encrypt(string plainText)
+    private static string Encrypt(string plainText)
     {
         using var aes = Aes.Create();
         aes.Key = EncryptionKey;
@@ -62,7 +62,7 @@ public static class EncryptionService // : IEncryptionService
         return Convert.ToBase64String(result);
     }
 
-    public static string Decrypt(string encryptedText)
+    private static string Decrypt(string encryptedText)
     {
         var fullCipher = Convert.FromBase64String(encryptedText);
 

@@ -1,13 +1,12 @@
 ﻿using System.Net.Http.Json;
 using UniPass.Client.Utils;
-using UniPass.Domain.Application;
 using UniPass.Infrastructure;
 using UniPass.Infrastructure.Contracts;
 using UniPass.Infrastructure.ViewModels;
 
 namespace UniPass.Client.Services.Api;
 
-public class AccountService : IAccountService
+public class AccountService : IAccount
 {
     private readonly HttpClient _client;
     private readonly string _basePath;
@@ -30,10 +29,10 @@ public class AccountService : IAccountService
         return await response.GetResult<ApplicationAuthenticationState>();
     }
 
-    public async Task<Operation<UserViewModel>> GetCurrentUser()
+    public async Task<Operation<UserModelViewModel>> GetCurrentUser()
     {
         var response = await _client.GetAsync($"{_basePath}/Account/CurrentUser");
-        return await response.GetResult<Operation<UserViewModel>>();
+        return await response.GetResult<Operation<UserModelViewModel>>();
     }
 
     public async Task<Operation<bool>> Logout()

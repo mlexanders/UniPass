@@ -3,7 +3,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using UniPass.Infrastructure;
 using UniPass.Infrastructure.Contracts;
 using UniPass.Infrastructure.Models;
 using UniPass.Infrastructure.ViewModels;
@@ -12,14 +11,14 @@ using UniPass.WebApi.Utils;
 namespace UniPass.WebApi.Controllers;
 
 [Route("api/[controller]/[action]")]
-public class AccountController : Controller, IAccountService
+public class AccountController : Controller, IAccount
 {
     private readonly ILogger<AccountController> _logger;
     private readonly IMapper _mapper;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly SignInManager<ApplicationUserModel> _signInManager;
 
     public AccountController(
-        SignInManager<ApplicationUser> signInManager,
+        SignInManager<ApplicationUserModel> signInManager,
         ILogger<AccountController> logger,
         IMapper mapper)
     {
@@ -35,7 +34,7 @@ public class AccountController : Controller, IAccountService
         if (user is null) return Operation<bool>.Error("Учетная запись не найдена");
 
         var result = await _signInManager.PasswordSignInAsync(user, model.Password, false, false);
-        if (result.Succeeded) return Operation<bool>.Result(true);
+        if (result.Succeeded) return Operation<bool>.Result(true, "Вы вошли в систему");
 
         return Operation<bool>.Error("Неверный логин или пароль");
     }
@@ -54,7 +53,7 @@ public class AccountController : Controller, IAccountService
 
     [HttpGet]
     [Route("/api/[controller]/CurrentUser")]
-    public async Task<Operation<UserViewModel>> GetCurrentUser()
+    public async Task<Operation<UserModelViewModel>> GetCurrentUser()
     {
         try
         {
@@ -64,17 +63,17 @@ public class AccountController : Controller, IAccountService
             var user = await _signInManager.UserManager.FindByIdAsync(userId)
                        ?? throw new UniPassApiException("Учетная запись не найдена");
 
-            var userModel = _mapper.Map<UserViewModel>(user);
-            return Operation<UserViewModel>.Result(userModel);
+            var userModel = _mapper.Map<UserModelViewModel>(user);
+            return Operation<UserModelViewModel>.Result(userModel);
         }
         catch (UniPassApiException e)
         {
-            return Operation<UserViewModel>.Error(e.Message);
+            return Operation<UserModelViewModel>.Error(e.Message);
         }
         catch (Exception e)
         {
             _logger.LogError(e, e.Message, User);
-            return Operation<UserViewModel>.Error(e.Message);
+            return Operation<UserModelViewModel>.Error(e.Message);
         }
     }
 

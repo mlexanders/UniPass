@@ -5,7 +5,7 @@ using Radzen;
 using UniPass.Client;
 using UniPass.Client.Services;
 using UniPass.Client.Services.Api;
-using UniPass.Domain.Application;
+using UniPass.Infrastructure;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<Routes>("#app");

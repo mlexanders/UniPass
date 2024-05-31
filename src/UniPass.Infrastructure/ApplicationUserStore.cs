@@ -8,7 +8,7 @@ namespace UniPass.Infrastructure;
 /// <summary>
 ///     Application store for user
 /// </summary>
-public class ApplicationUserStore : UserStore<ApplicationUser, ApplicationRole, ApplicationDbContext, Guid>
+public class ApplicationUserStore : UserStore<ApplicationUserModel, ApplicationRole, ApplicationDbContext, Guid>
 {
     public ApplicationUserStore(ApplicationDbContext context, IdentityErrorDescriber describer)
         : base(context, describer)
@@ -27,7 +27,7 @@ public class ApplicationUserStore : UserStore<ApplicationUser, ApplicationRole, 
     ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the user
     ///     matching the specified <paramref name="userId" /> if it exists.
     /// </returns>
-    public override Task<ApplicationUser?> FindByIdAsync(string userId, CancellationToken cancellationToken = default)
+    public override Task<ApplicationUserModel?> FindByIdAsync(string userId, CancellationToken cancellationToken = default)
     {
         return Users
             .Include(x => x.ApplicationUserProfile).ThenInclude(x => x!.Permissions)
@@ -46,7 +46,7 @@ public class ApplicationUserStore : UserStore<ApplicationUser, ApplicationRole, 
     ///     The <see cref="T:System.Threading.Tasks.Task" /> that represents the asynchronous operation, containing the user
     ///     matching the specified <paramref name="normalizedUserName" /> if it exists.
     /// </returns>
-    public override Task<ApplicationUser?> FindByNameAsync(string normalizedUserName,
+    public override Task<ApplicationUserModel?> FindByNameAsync(string normalizedUserName,
         CancellationToken cancellationToken = default)
     {
         return Users

@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\UniPass.Domain\UniPass.Domain.csproj"/>
+      <Folder Include="Repositories\" />
     </ItemGroup>
 
 </Project>

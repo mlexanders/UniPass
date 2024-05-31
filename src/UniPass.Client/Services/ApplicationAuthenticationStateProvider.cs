@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using UniPass.Client.Services.Api;
 using UniPass.Client.Utils;
-using UniPass.Domain.Application;
+using UniPass.Infrastructure;
 using UniPass.Infrastructure.ViewModels;
 
 namespace UniPass.Client.Services;
@@ -11,8 +11,6 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
 {
     private readonly AccountService _accountService;
     private readonly UniPassClientLogger<ApplicationAuthenticationStateProvider> _logger;
-
-    private bool _isAuthenticated = false;
 
     public ApplicationAuthenticationStateProvider(AccountService accountService, UniPassClientLogger<ApplicationAuthenticationStateProvider> logger)
     {
@@ -37,7 +35,6 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
         }
 
         var result = new AuthenticationState(new ClaimsPrincipal(identity));
-        _isAuthenticated = result.User.Identity?.IsAuthenticated ?? false;
         return result;
     }
     
@@ -61,7 +58,7 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
         }
     }
 
-    public async Task<UserViewModel> GetUser()
+    public async Task<UserModelViewModel> GetUser()
     {
         var result = await _accountService.GetCurrentUser();
         if (result.Success) return result.Value;
@@ -75,6 +72,4 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
     }
 
     private static async Task<AuthenticationState> GetAnonymousState() => new(new ClaimsPrincipal());
-
-    public bool IsAuthenticated() => _isAuthenticated;
 }

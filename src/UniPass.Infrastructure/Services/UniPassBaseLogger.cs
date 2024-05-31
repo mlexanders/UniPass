@@ -24,13 +24,7 @@ public class UniPassBaseLogger<T> : ILogger<T> where T : class
 
     public IDisposable BeginScope<TState>(TState state) where TState : notnull
     {
-        return new NoopDisposable();
+        return null!;
     }
     
-    private class NoopDisposable : IDisposable
-    {
-        public void Dispose()
-        {
-        }
-    }
 }

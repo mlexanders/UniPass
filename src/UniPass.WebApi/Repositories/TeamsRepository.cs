@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniPass.Infrastructure;
 using UniPass.Infrastructure.Models;
-using UniPass.Infrastructure.Repositories;
 using UniPass.WebApi.Utils;
 
 namespace UniPass.WebApi.Repositories;

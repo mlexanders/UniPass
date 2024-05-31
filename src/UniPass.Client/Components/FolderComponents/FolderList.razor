@@ -1,6 +1,4 @@
-﻿@using UniPass.Domain
-
-
+﻿@using UniPass.Infrastructure.Models
 <RadzenDataGrid SelectionMode="DataGridSelectionMode.Single" AllowVirtualization="true"
                 ExpandMode="DataGridExpandMode.Single"  @bind-Value="@_selectedFolder"
                 Data="@Folders" TItem="Folder">
@@ -44,9 +42,15 @@
                             </RadzenStack>
                         </RadzenColumn>
 
-                        <RadzenColumn>
+                        <RadzenColumn Size="1">
                             <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
-                                <RadzenButton Size="ButtonSize.Small" Icon="add" Click="@(async () => await CreateKey(folder))"></RadzenButton>
+                                <RadzenButton Size="ButtonSize.Small" Icon="add" Click="@(async () => await CreateKey(folder))"/>
+                            </RadzenStack>
+                        </RadzenColumn>
+                        
+                        <RadzenColumn Size="1">
+                            <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Icon="delete_forever" Click="@(async () => await DeleteFolder(folder))"/>
                             </RadzenStack>
                         </RadzenColumn>
                     </RadzenRow>
@@ -59,6 +63,7 @@
 @code {
     [Parameter] public IEnumerable<Folder> Folders { get; set; }
     [Parameter] public EventCallback OnFolderCreate { get; set; }
+    [Parameter] public EventCallback<Folder> OnFolderDelete { get; set; }
     [Parameter] public EventCallback<Folder> OnKeyCreate { get; set; }
     [Parameter] public IList<Key> SelectedKey { get; set; }
     [Parameter] public EventCallback<IList<Key>> SelectedKeyChanged { get; set; }
@@ -76,9 +81,14 @@
         await OnFolderCreate.InvokeAsync();
     }
 
-    private async Task OnChange(IList<Key> arg)
+    private async Task OnChange(IList<Key> key)
     {
-        SelectedKey = arg;
+        SelectedKey = key;
         await SelectedKeyChanged.InvokeAsync(SelectedKey);
+    }
+
+    private async Task DeleteFolder(Folder folder)
+    {
+        await OnFolderDelete.InvokeAsync(folder);
     }
 }

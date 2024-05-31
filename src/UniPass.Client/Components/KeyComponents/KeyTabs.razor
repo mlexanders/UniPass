@@ -1,4 +1,4 @@
-﻿@using UniPass.Domain
+﻿@using UniPass.Infrastructure.Models
 <RadzenTabs>
     <Tabs>
         <RadzenTabsItem Disabled="@(!TabsIsEnabled())" Icon="info">
@@ -15,15 +15,38 @@
                 <KeyForm Text="Редактирование" Key="@SelectedKey" OnSubmit="@OnKeyUpdate"></KeyForm>
             }
         </RadzenTabsItem>
+        
+        <RadzenTabsItem Visible="DeletingEnabled" Disabled="@(!TabsIsEnabled())" Icon="delete">
+            @if (SelectedKey != null)
+            {
+                <RadzenStack>
+                    <KeyCard Key="@SelectedKey"/>
+                </RadzenStack>
+                <RadzenStack class="rz-m-1">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Text="Удалить" IsBusy="@_isDeleting"
+                                  Icon="delete_forever" Click="@(async () => await Deletekey(SelectedKey))"/>
+                </RadzenStack>
+            }
+        </RadzenTabsItem>
+        
     </Tabs>
 </RadzenTabs>
 
 
 @code {
     [Parameter] public EventCallback<Key> OnKeyUpdate { get; set; }
+    [Parameter] public EventCallback<Key> OnKeyDelete { get; set; }
     [Parameter] public Key? SelectedKey { get; set; }
-    // [Parameter] public EventCallback<Key> SelectedKeyChanged { get; set; }
     [Parameter] public bool EditingEnabled { get; set; }
+    [Parameter] public bool DeletingEnabled { get; set; }
+    private bool _isDeleting = false;
 
     private bool TabsIsEnabled() => SelectedKey != null;
+
+    private async Task Deletekey(Key key)
+    {
+        _isDeleting = true;
+        await OnKeyDelete.InvokeAsync(key);
+        _isDeleting = false;
+    }
 }

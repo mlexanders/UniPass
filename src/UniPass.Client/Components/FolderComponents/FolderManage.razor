@@ -1,7 +1,7 @@
 ﻿@using UniPass.Client.Services.Api
 @using UniPass.Client.Utils
 @using UniPass.Client.Components.KeyComponents
-@using UniPass.Domain
+@using UniPass.Infrastructure.Models
 @inject DialogService DialogService
 @inject KeyService KeyService
 @inject NotificationService NotificationService
@@ -14,7 +14,7 @@
         </RadzenColumn>
         <RadzenColumn>
             <RadzenStack>
-                <KeyTabs OnKeyUpdate="@UpdateKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true"></KeyTabs>
+                <KeyTabs OnKeyUpdate="@UpdateKey" OnKeyDelete="@DeleteKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true" DeletingEnabled="true"></KeyTabs>
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
@@ -62,6 +62,21 @@
         if (key is null) return;
 
         var result = await KeyService.Update(key);
+
+        if (!result.Success)
+        {
+            NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+            return;
+        }
+
+        NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
+    }
+
+    private async Task DeleteKey(Key key)
+    {
+        if (key is null) return;
+
+        var result = await KeyService.Delete(key.Id);
 
         if (!result.Success)
         {

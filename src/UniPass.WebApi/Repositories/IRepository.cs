@@ -1,8 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Query;
-using UniPass.Domain.Base;
+using UniPass.Infrastructure.Contracts;
 
-namespace UniPass.Infrastructure.Repositories;
+namespace UniPass.WebApi.Repositories;
 
 public interface IRepository<TEntity, TKey> where TEntity : Entity<TKey>
 {

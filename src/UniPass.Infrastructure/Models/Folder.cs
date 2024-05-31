@@ -1,6 +1,6 @@
-﻿using UniPass.Domain.Base;
+﻿using UniPass.Infrastructure.Contracts;
 
-namespace UniPass.Domain;
+namespace UniPass.Infrastructure.Models;
 
 public class Folder : Entity<int>
 {

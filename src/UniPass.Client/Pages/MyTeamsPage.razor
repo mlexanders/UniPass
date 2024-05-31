@@ -5,11 +5,10 @@
 @using UniPass.Client.Components.TeamsComponents
 @using UniPass.Client.Components.FolderComponents
 @using UniPass.Client.Components.KeyComponents
-@using UniPass.Domain
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject TeamService TeamService
-
+@inject KeyService KeyService
 
 <RadzenRow AlignItems="AlignItems.Center" Class="rz-mb-2" Gap="0.3rem">
 
@@ -46,7 +45,7 @@
         </RadzenColumn>
         <RadzenColumn>
             <RadzenStack>
-                <KeyTabs OnKeyUpdate="@UpdateKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true"></KeyTabs>
+                <KeyTabs OnKeyUpdate="@UpdateKey" OnKeyDelete="@DeleteKey" SelectedKey="@(_selectedKey?.First())" EditingEnabled="true" DeletingEnabled="true"></KeyTabs>
             </RadzenStack>
         </RadzenColumn>
     </RadzenRow>
@@ -102,9 +101,33 @@
             new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
     }
 
-    private async Task UpdateKey(Key arg)
+    private async Task UpdateKey(Key key)
     {
-        // TODO: immplement
-    }
+        if (key is null) return;
 
+        var result = await KeyService.Update(key);
+
+        if (!result.Success)
+        {
+            NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+            return;
+        }
+
+        NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
+    }
+    
+    private async Task DeleteKey(Key key)
+    {
+        if (key is null) return;
+
+        var result = await KeyService.Delete(key.Id);
+
+        if (!result.Success)
+        {
+            NotificationService.ShowNotification("Ошибка", result.Message, NotificationSeverity.Error);
+            return;
+        }
+
+        NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
+    }
 }

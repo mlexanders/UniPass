@@ -1,6 +1,5 @@
 ﻿using Calabonga.AspNetCore.AppDefinitions;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using UniPass.Domain.Application;
 
 namespace UniPass.WebApi.Definitions.Authorizations;
 

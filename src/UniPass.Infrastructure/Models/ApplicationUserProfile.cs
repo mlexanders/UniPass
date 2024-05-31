@@ -1,4 +1,4 @@
-using UniPass.Domain.Base;
+using UniPass.Infrastructure.Contracts;
 
 namespace UniPass.Infrastructure.Models;
 

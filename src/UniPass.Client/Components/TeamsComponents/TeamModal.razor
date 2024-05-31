@@ -10,7 +10,7 @@
 </RadzenStack>
 
 <RadzenDataGrid @ref="_usersGrid" AllowAlternatingRows="false" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="@_editMode"
-                Data="@_workers" TItem="ApplicationUser" ColumnWidth="200px" EmptyText="Тут пока пусто">
+                Data="@_workers" TItem="ApplicationUserModel" ColumnWidth="200px" EmptyText="Тут пока пусто">
     <Columns>
         <RadzenDataGridColumn Property="Email" Title="email">
         </RadzenDataGridColumn>
@@ -28,8 +28,8 @@
 @code {
     [Parameter] public Team Team { get; set; }
 
-    private RadzenDataGrid<ApplicationUser> _usersGrid;
-    private IEnumerable<ApplicationUser> _workers;
+    private RadzenDataGrid<ApplicationUserModel> _usersGrid;
+    private IEnumerable<ApplicationUserModel> _workers;
 
     private DataGridEditMode _editMode = DataGridEditMode.Single;
 
@@ -52,17 +52,17 @@
         }
     }
 
-    private async Task DeleteRow(ApplicationUser user)
+    private async Task DeleteRow(ApplicationUserModel userModel)
     {
         try
         {
-            var result = await TeamService.DeleteWorker(Team.Id, user.Id);
+            var result = await TeamService.DeleteWorker(Team.Id, userModel.Id);
             if (!result.Success)
             {
                 NotificationService.ShowNotification("Запись не была удалена", result.Message, NotificationSeverity.Error);
             }
 
-            NotificationService.ShowNotification("Запись успешно удалена", $"{user.Email} удален из команды", NotificationSeverity.Success);
+            NotificationService.ShowNotification("Запись успешно удалена", $"{userModel.Email} удален из команды", NotificationSeverity.Success);
 
             var updatedTeam = result.Value;
 

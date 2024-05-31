@@ -21,7 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\UniPass.Domain\UniPass.Domain.csproj"/>
         <ProjectReference Include="..\UniPass.Infrastructure\UniPass.Infrastructure.csproj"/>
     </ItemGroup>
 

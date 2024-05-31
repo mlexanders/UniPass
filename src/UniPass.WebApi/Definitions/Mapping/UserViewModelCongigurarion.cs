@@ -8,7 +8,7 @@ public class UserViewModelConfiguration : Profile
 {
     public UserViewModelConfiguration()
     {
-        CreateMap<ApplicationUser, UserViewModel>()
+        CreateMap<ApplicationUserModel, UserModelViewModel>()
             .ForMember(x => x.Id,
                 o => o.MapFrom(a => a.Id))
             .ForMember(x => x.FirstName,

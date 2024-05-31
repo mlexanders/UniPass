@@ -1,5 +1,4 @@
 ﻿using Calabonga.AspNetCore.AppDefinitions;
-using UniPass.Infrastructure.Repositories;
 using UniPass.WebApi.Repositories;
 
 namespace UniPass.WebApi.Definitions.Repositories;

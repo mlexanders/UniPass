@@ -1,7 +1,6 @@
 ﻿@page "/key"
-
-@using UniPass.Domain
 @using UniPass.Client.Utils
+@using UniPass.Infrastructure.Models
 
 <RadzenTemplateForm TItem="Key" Data="@_key" Submit="@(async (Key args) => { await Submit(args); })">
     <RadzenRow>
@@ -78,6 +77,7 @@
     private Key _key;
 
     [Parameter] public Key Key { get; set; } = new();
+    [Parameter] public EventCallback<Key> OnSubmit { get; set; }
     
     [Parameter]
     public string Text
@@ -86,7 +86,6 @@
         set => _text = value;
     }
 
-    [Parameter] public EventCallback<Key> OnSubmit { get; set; }
 
     protected override void OnInitialized()
     {

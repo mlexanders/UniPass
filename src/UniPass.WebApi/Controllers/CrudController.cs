@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using UniPass.Domain.Base;
-using UniPass.Infrastructure.Repositories;
+using UniPass.Infrastructure.Contracts;
 using UniPass.Infrastructure.Services;
 using UniPass.Infrastructure.ViewModels;
+using UniPass.WebApi.Repositories;
 using UniPass.WebApi.Utils;
 
 namespace UniPass.WebApi.Controllers;

@@ -4,7 +4,7 @@ using UniPass.Infrastructure.Models;
 
 namespace UniPass.Infrastructure.Base;
 
-public abstract class DbContextBase : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+public abstract class DbContextBase : IdentityDbContext<ApplicationUserModel, ApplicationRole, Guid>
 {
     protected DbContextBase(DbContextOptions options) : base(options)
     {

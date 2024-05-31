@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using Calabonga.AspNetCore.AppDefinitions;
-using UniPass.Domain.Application;
+using UniPass.Infrastructure;
 
 namespace UniPass.WebApi.Definitions.Cors;
 

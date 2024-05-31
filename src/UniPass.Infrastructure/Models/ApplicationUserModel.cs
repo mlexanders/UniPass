@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Identity;
-using UniPass.Domain;
 using UniPass.Infrastructure.Contracts;
 
 namespace UniPass.Infrastructure.Models;
 
-public class ApplicationUser : IdentityUser<Guid>, IUser
+public class ApplicationUserModel : IdentityUser<Guid>, IUserModel
 {
     public Guid? ApplicationUserProfileId { get; set; }
     public virtual ApplicationUserProfile? ApplicationUserProfile { get; set; }

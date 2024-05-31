@@ -1,6 +1,5 @@
-﻿using UniPass.Domain;
-using UniPass.Infrastructure;
-using UniPass.Infrastructure.Repositories;
+﻿using UniPass.Infrastructure;
+using UniPass.Infrastructure.Models;
 
 namespace UniPass.WebApi.Repositories;
 

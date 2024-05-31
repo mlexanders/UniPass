@@ -1,5 +1,4 @@
-﻿using UniPass.Domain;
-using UniPass.Infrastructure.Models;
+﻿using UniPass.Infrastructure.Models;
 
 namespace UniPass.Client.Utils;
 

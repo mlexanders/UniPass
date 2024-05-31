@@ -1,5 +1,4 @@
-﻿using UniPass.Domain;
-using UniPass.Infrastructure.Repositories;
+﻿using UniPass.Infrastructure.Models;
 using UniPass.Infrastructure.ViewModels;
 
 namespace UniPass.Infrastructure.Contracts;

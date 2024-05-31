@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using UniPass.Domain;
 using UniPass.Infrastructure.Base;
 using UniPass.Infrastructure.Models;
 
@@ -20,17 +19,17 @@ public class ApplicationDbContext : DbContextBase
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<Team>()
-            .HasMany<ApplicationUser>(u => u.Workers)
+            .HasMany<ApplicationUserModel>(u => u.Workers)
             .WithMany(t => t.Teams);
 
         builder.Entity<Team>()
-            .HasOne<ApplicationUser>(u => u.Organizer)
+            .HasOne<ApplicationUserModel>(u => u.Organizer)
             .WithMany(u => u.CreatedTeams)
             .HasForeignKey(u => u.OrganizerId)
             .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Folder>()
-            .HasOne<ApplicationUser>()
+            .HasOne<ApplicationUserModel>()
             .WithMany(u => u.Folders)
             .HasForeignKey(f => f.OwnerId);
 

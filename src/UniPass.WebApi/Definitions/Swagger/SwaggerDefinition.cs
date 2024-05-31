@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
-using UniPass.Domain.Application;
+using UniPass.Infrastructure;
 
 namespace UniPass.WebApi.Definitions.Swagger;
 

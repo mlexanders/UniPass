@@ -14,7 +14,7 @@ public class TeamService : BaseCrudRequests<Team, Guid>, ITeamService
     
     public async Task<Operation<Team>> DeleteWorker(Guid teamId, Guid workerId)
     {
-        var uri = $"{_basePath}/{nameof(Team)}/deleteWorker?teamId={teamId}&workerId={workerId}";
+        var uri = $"{BasePath}/{nameof(Team)}/deleteWorker?teamId={teamId}&workerId={workerId}";
         var response = await Client.PostAsJsonAsync(uri, "");
         return await response.GetResult<Operation<Team>>();
     }
@@ -36,7 +36,7 @@ public class TeamService : BaseCrudRequests<Team, Guid>, ITeamService
 
     public async Task<Operation<Team>> AddWorker(Guid teamId, string email)
     {
-        var uri = $"{_basePath}/{nameof(Team)}/addWorker?teamId={teamId}&email={email}";
+        var uri = $"{BasePath}/{nameof(Team)}/addWorker?teamId={teamId}&email={email}";
         var response = await Client.PostAsJsonAsync(uri, "");
         return await response.GetResult<Operation<Team>>();
     }
@@ -58,7 +58,7 @@ public class TeamService : BaseCrudRequests<Team, Guid>, ITeamService
 
     public async Task<Operation<PagedList<Team>>> ReadAsParticipant(int page, int pageSize)
     {
-        var uri = $"{_basePath}/{nameof(Team)}/ReadAsParticipant/{page}/{pageSize}";
+        var uri = $"{BasePath}/{nameof(Team)}/ReadAsParticipant/{page}/{pageSize}";
         var response = await Client.GetAsync(uri);
         return await response.GetResult<Operation<PagedList<Team>>>();
     }

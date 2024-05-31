@@ -1,5 +1,5 @@
-﻿@using UniPass.Domain
-@using UniPass.Client.Utils
+﻿@using UniPass.Client.Utils
+@using UniPass.Infrastructure.Models
 
 <RadzenTemplateForm TItem="Folder" Data="@_folder" Submit="@(async (Folder args) => { await Submit(args); })">
     <RadzenRow>

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using UniPass.Domain.Application;
 using UniPass.Infrastructure;
 using UniPass.Infrastructure.Models;
 using UniPass.WebApi.Repositories;
@@ -54,7 +53,7 @@ public static class DatabaseInitializer
         
         foreach (var email in Emails)
         {
-            var user = new ApplicationUser
+            var user = new ApplicationUserModel
             {
                 Email = email,
                 NormalizedEmail = email.ToUpper(),
@@ -91,22 +90,22 @@ public static class DatabaseInitializer
         await context.SaveChangesAsync();
     }
 
-    private static async Task CreateUser(ApplicationDbContext context, ApplicationUser user, IServiceScope scope,
+    private static async Task CreateUser(ApplicationDbContext context, ApplicationUserModel userModel, IServiceScope scope,
         string[] roles)
     {
-        if (!context!.Users.Any(u => u.UserName == user.UserName))
+        if (!context!.Users.Any(u => u.UserName == userModel.UserName))
         {
-            var password = new PasswordHasher<ApplicationUser>();
-            var hashed = password.HashPassword(user, "123qwe!@#");
-            user.PasswordHash = hashed;
+            var password = new PasswordHasher<ApplicationUserModel>();
+            var hashed = password.HashPassword(userModel, "123qwe!@#");
+            userModel.PasswordHash = hashed;
             var userStore = scope.ServiceProvider.GetRequiredService<ApplicationUserStore>();
-            var result = await userStore.CreateAsync(user);
+            var result = await userStore.CreateAsync(userModel);
             if (!result.Succeeded) throw new InvalidOperationException("Cannot create account");
 
-            var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+            var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUserModel>>();
             foreach (var role in roles)
             {
-                var roleAdded = await userManager!.AddToRoleAsync(user, role);
+                var roleAdded = await userManager!.AddToRoleAsync(userModel, role);
                 if (roleAdded.Succeeded) await context.SaveChangesAsync();
             }
         }
