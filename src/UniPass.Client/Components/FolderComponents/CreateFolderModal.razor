@@ -1,7 +1,7 @@
-﻿@using UniPass.Client.Services.Api
-@using UniPass.Client.Utils
-@using UniPass.Client.Services
+﻿@using UniPass.Client.Utils
 @using UniPass.Infrastructure.Models
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Services
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject FolderService FolderService
@@ -22,11 +22,11 @@
                 return;
             }
 
-            if (TeamId != null) 
+            if (TeamId != null)
             {
                 folder.TeamId = TeamId.Value;
             }
-            
+
             var result = await FolderService.Create(folder);
             if (!result.Success)
             {
@@ -45,4 +45,5 @@
 
         DialogService.Close(folder);
     }
+
 }

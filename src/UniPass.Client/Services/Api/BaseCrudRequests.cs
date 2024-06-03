@@ -8,8 +8,8 @@ namespace UniPass.Client.Services.Api;
 
 public class BaseCrudRequests<TEntity, TKey> : ICrud<TEntity, TKey> where TEntity : Entity<TKey>
 {
-    protected readonly HttpClient Client;
     protected readonly string BasePath;
+    protected readonly HttpClient Client;
     protected readonly string EntityPath;
 
     public BaseCrudRequests(IHttpClientFactory httpClientFactory)
@@ -18,19 +18,19 @@ public class BaseCrudRequests<TEntity, TKey> : ICrud<TEntity, TKey> where TEntit
         BasePath = Client.BaseAddress?.ToString();
         EntityPath = $"{BasePath}/{typeof(TEntity).Name}";
     }
-    
+
     public async Task<Operation<TEntity>> Create(TEntity entity)
     {
-        var response = await Client.PostAsJsonAsync( $"{EntityPath}", entity);
+        var response = await Client.PostAsJsonAsync($"{EntityPath}", entity);
         return await response.GetResult<Operation<TEntity>>();
     }
 
     public async Task<Operation<OperationInfo>> Create(List<TEntity> entities)
     {
-        var response = await Client.PostAsJsonAsync( $"{EntityPath}/many", entities);
+        var response = await Client.PostAsJsonAsync($"{EntityPath}/many", entities);
         return await response.GetResult<Operation<OperationInfo>>();
     }
-    
+
     public async Task<Operation<OperationInfo>> Delete(TKey key)
     {
         var response = await Client.DeleteAsync($"{EntityPath}/{key}");
@@ -48,7 +48,7 @@ public class BaseCrudRequests<TEntity, TKey> : ICrud<TEntity, TKey> where TEntit
         var response = await Client.GetAsync($"{EntityPath}/{key}?includes={includes}");
         return await response.GetResult<Operation<TEntity>>();
     }
-    
+
     public async Task<Operation<TEntity>> Update(TEntity entity)
     {
         var response = await Client.PutAsJsonAsync($"{EntityPath}", entity);

@@ -9,3 +9,8 @@ public interface IAccount
     Task<Operation<UserModelViewModel>> GetCurrentUser();
     Task<Operation<bool>> Logout();
 }
+
+public interface IUser
+{
+    Task<Operation<bool>> Register(RegisterViewModel model);
+}

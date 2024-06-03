@@ -5,7 +5,7 @@
 }
 else
 {
-    <RadzenTemplateForm TItem="Key" Data="@Key" >
+    <RadzenTemplateForm TItem="Key" Data="@Key">
         <RadzenRow>
             @* Class="rz-p-0 rz-p-lg-4" *@
             @* Gap="2rem" *@
@@ -19,13 +19,13 @@ else
                                     <RadzenTextBox @bind-Value="@Key.Name" ReadOnly="@_isReadonlyForm"/>
                                 </ChildContent>
                             </RadzenFormField>
-                            
+
                             <RadzenFormField Text="URL" Variant="@_variant">
                                 <ChildContent>
                                     <RadzenTextBox @bind-Value="@Key.Url" ReadOnly="@_isReadonlyForm"/>
                                 </ChildContent>
                             </RadzenFormField>
-                            
+
                             <RadzenFormField Text="Логин" Variant="@_variant">
                                 <ChildContent>
                                     <RadzenTextBox @bind-Value="@Key.Login" ReadOnly="@_isReadonlyForm"/>
@@ -70,5 +70,9 @@ else
     [Parameter] public Key Key { get; set; }
     [Parameter] public EventCallback<Key> KeyChanged { get; set; }
 
-    private void TogglePassword() => _showPassword = !_showPassword;
+    private void TogglePassword()
+    {
+        _showPassword = !_showPassword;
+    }
+
 }

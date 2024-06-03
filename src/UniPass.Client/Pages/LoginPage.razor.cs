@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using UniPass.Client.Services;
@@ -18,7 +17,8 @@ public partial class LoginPage
     [Inject] private ApplicationAuthenticationStateProvider AuthenticationStateProvider { get; set; }
     [Inject] private NavigationManager NavigationManager { get; set; }
     [Inject] private ILogger<LoginPage> _Logger { get; set; }
-    
+    [Inject] public DialogService DialogService { get; set; }
+
 
     private async Task Submit(LoginArgs args)
     {
@@ -37,21 +37,18 @@ public partial class LoginPage
         {
             _errorVisible = true;
             _error = "Ошибка сети";
-            _Logger.LogError(e.Message);   
-            _Logger.LogError(e.StackTrace);   
+            _Logger.LogError(e.Message);
+            _Logger.LogError(e.StackTrace);
         }
         catch (Exception e)
         {
-            _Logger.LogError(e.Message);   
-            _Logger.LogError(e.StackTrace);   
+            _Logger.LogError(e.Message);
+            _Logger.LogError(e.StackTrace);
             _errorVisible = true;
             _error = e.Message;
         }
     }
 
-    private async Task OnRegister()
-    {
-    }
 
     private async Task OnReset()
     {

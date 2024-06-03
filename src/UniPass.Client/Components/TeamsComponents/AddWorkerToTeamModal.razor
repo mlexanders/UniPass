@@ -1,6 +1,6 @@
-﻿@using UniPass.Infrastructure.Models
+﻿@using UniPass.Client.Utils
+@using UniPass.Infrastructure.Models
 @using UniPass.Client.Services.Api
-@using UniPass.Client.Utils
 @inject DialogService DialogService
 @inject TeamService TeamService
 @inject NotificationService NotificationService
@@ -9,14 +9,14 @@
     <RadzenRow>
         <RadzenColumn>
             <RadzenStack>
-                <RadzenFieldset Text=@($"Введите email пользователя")>
+                <RadzenFieldset Text=@("Введите email пользователя")>
                     <RadzenStack Gap="1rem">
                         <RadzenFormField Text="email" Variant="@_variant">
                             <ChildContent>
                                 <RadzenTextBox @bind-Value="@_email"/>
                             </ChildContent>
                             <Helper>
-                                <RadzenRequiredValidator Text="@RequiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                                <RadzenRequiredValidator Text="@RequiredMessage" Popup="@_popup"></RadzenRequiredValidator>
                                 <RadzenEmailValidator Text="Введите email" щ></RadzenEmailValidator>
                             </Helper>
                         </RadzenFormField>
@@ -69,4 +69,5 @@
         DialogService.Close();
         // await OnSubmit.InvokeAsync();
     }
+
 }

@@ -32,6 +32,7 @@ builder.Services.AddTransient<AccountService>();
 builder.Services.AddTransient<TeamService>();
 builder.Services.AddTransient<KeyService>();
 builder.Services.AddTransient<FolderService>();
+builder.Services.AddTransient<UserService>();
 builder.Services.AddScoped<ApplicationAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<ApplicationAuthenticationStateProvider>());
 

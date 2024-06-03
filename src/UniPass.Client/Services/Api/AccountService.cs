@@ -8,8 +8,8 @@ namespace UniPass.Client.Services.Api;
 
 public class AccountService : IAccount
 {
-    private readonly HttpClient _client;
     private readonly string _basePath;
+    private readonly HttpClient _client;
 
     public AccountService(IHttpClientFactory httpClientFactory)
     {

@@ -35,9 +35,9 @@ else
 
     private async Task CreateFolder()
     {
-        var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание новой папки",
-            new Dictionary<string, object>() { { "TeamId", Team.Id } },
-            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+        var result = await DialogService.OpenAsync<CreateFolderModal>("Создание новой папки",
+            new Dictionary<string, object> { { "TeamId", Team.Id } },
+            new DialogOptions { Width = "auto", Resizable = true, Draggable = true });
 
         if (result is null) return;
 
@@ -46,12 +46,12 @@ else
 
     private async Task CreateKey(Folder folder)
     {
-        var result = await DialogService.OpenAsync<CreateKeyModal>($"",
-            new Dictionary<string, object>() { { "FolderId", folder.Id } },
-            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+        var result = await DialogService.OpenAsync<CreateKeyModal>("",
+            new Dictionary<string, object> { { "FolderId", folder.Id } },
+            new DialogOptions { Width = "auto", Resizable = true, Draggable = true });
         if (result is null) return;
 
-        var newKey = result as Key; 
+        var newKey = result as Key;
 
         //Update keyList inside folder
         var updatedFolder = _folders.FirstOrDefault(f => f.Id.Equals(folder.Id));
@@ -70,4 +70,5 @@ else
         SelectedKey = key;
         await SelectedKeyChanged.InvokeAsync(key);
     }
+
 }

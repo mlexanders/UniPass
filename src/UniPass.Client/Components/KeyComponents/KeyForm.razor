@@ -14,7 +14,7 @@
                                 <RadzenTextBox @bind-Value="@_key.Name" ReadOnly="@_isReadonlyForm"/>
                             </ChildContent>
                             <Helper>
-                                <RadzenRequiredValidator Text="@_requiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                                <RadzenRequiredValidator Text="@_requiredMessage" Popup="@_popup"></RadzenRequiredValidator>
                             </Helper>
                         </RadzenFormField>
 
@@ -32,7 +32,7 @@
                                 <RadzenTextBox @bind-Value="@_key.Login" ReadOnly="@_isReadonlyForm"/>
                             </ChildContent>
                             <Helper>
-                                <RadzenRequiredValidator Text="@_requiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                                <RadzenRequiredValidator Text="@_requiredMessage" Popup="@_popup"></RadzenRequiredValidator>
                             </Helper>
                         </RadzenFormField>
 
@@ -45,7 +45,7 @@
                                 <RadzenButton Icon="@(_showPassword ? "visibility" : "visibility_off")" Click="TogglePassword" Variant="Variant.Text" Size="ButtonSize.Small"/>
                             </End>
                             <Helper>
-                                <RadzenRequiredValidator Text="@_requiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                                <RadzenRequiredValidator Text="@_requiredMessage" Popup="@_popup"></RadzenRequiredValidator>
                             </Helper>
                         </RadzenFormField>
 
@@ -73,18 +73,12 @@
     private bool _isBusy;
     private bool _isReadonlyForm = false;
     private string _requiredMessage = "Обязательно для заполенения";
-    private string _text = "Добавить новый пароль";
     private Key _key;
 
     [Parameter] public Key Key { get; set; } = new();
     [Parameter] public EventCallback<Key> OnSubmit { get; set; }
-    
-    [Parameter]
-    public string Text
-    {
-        get => _text;
-        set => _text = value;
-    }
+
+    [Parameter] public string Text { get; set; } = "Добавить новый пароль";
 
 
     protected override void OnInitialized()
@@ -110,4 +104,5 @@
         _key.Map(Key);
         OnSubmit.InvokeAsync();
     }
+
 }

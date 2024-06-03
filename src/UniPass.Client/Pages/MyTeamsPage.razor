@@ -1,10 +1,10 @@
 ﻿@page "/My-Teams"
+@using UniPass.Client.Utils
 @using UniPass.Infrastructure.Models
 @using UniPass.Client.Services.Api
-@using UniPass.Client.Utils
-@using UniPass.Client.Components.TeamsComponents
 @using UniPass.Client.Components.FolderComponents
 @using UniPass.Client.Components.KeyComponents
+@using UniPass.Client.Components.TeamsComponents
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject TeamService TeamService
@@ -31,7 +31,7 @@
             <RadzenDataGrid TItem="Team"
                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                             AllowPaging="true" PageSize="@_pageSize" bind-Value="_selectedTeam"
-                            AllowSorting="true" ColumnWidth="200px" IsLoading=@_isLoading Count=@_count
+                            AllowSorting="true" ColumnWidth="200px" IsLoading="@_isLoading" Count="@_count"
                             SelectionMode="DataGridSelectionMode.Single"
                             Data="@_teams" LoadData="@LoadData" RowSelect="@ShowTeamModal">
                 <Template Context="team">
@@ -56,8 +56,9 @@
     private IEnumerable<Team> _teams;
     private IList<Team> _selectedTeam;
     private bool _isLoading;
-    private int _pageSize = 5;
+    private readonly int _pageSize = 5;
     private int _count;
+
     private IList<Key> _selectedKey;
     // public Key GetSelectedKey() => _selectedKey.Any() ? _selectedKey.First() : new Key();
 
@@ -90,15 +91,15 @@
     {
         var a = 13 - 2;
         var result = await DialogService.OpenAsync<TeamModal>($"Команда: {team.Name}",
-            new Dictionary<string, object>() { { "Team", team } },
-            new DialogOptions() { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
+            new Dictionary<string, object> { { "Team", team } },
+            new DialogOptions { Width = "700px", Height = "512px", Resizable = true, Draggable = true });
     }
 
     private async Task OnCreateTeam()
     {
-        var result = await DialogService.OpenAsync<CreateTeamModal>($"Создание новой команды",
-            new Dictionary<string, object>() { },
-            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+        var result = await DialogService.OpenAsync<CreateTeamModal>("Создание новой команды",
+            new Dictionary<string, object>(),
+            new DialogOptions { Width = "auto", Resizable = true, Draggable = true });
     }
 
     private async Task UpdateKey(Key key)
@@ -115,7 +116,7 @@
 
         NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
     }
-    
+
     private async Task DeleteKey(Key key)
     {
         if (key is null) return;
@@ -130,4 +131,5 @@
 
         NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
     }
+
 }

@@ -8,7 +8,7 @@
                 @Body
                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center"
                              Gap="1rem" Wrap="FlexWrap.Wrap">
-                    <RadzenButton Shade="Shade.Lighter" Click="@OnClickBack" Text="На главную" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Shade="Shade.Lighter" Click="@OnClickBack" Text="На главную" ButtonStyle="ButtonStyle.Secondary"/>
                 </RadzenStack>
             </RadzenColumn>
         </RadzenRow>
@@ -17,5 +17,10 @@
 
 
 @code {
-    private void OnClickBack() => NavigationManager.NavigateTo("/");
+
+    private void OnClickBack()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
 }

@@ -12,7 +12,8 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
     private readonly AccountService _accountService;
     private readonly UniPassClientLogger<ApplicationAuthenticationStateProvider> _logger;
 
-    public ApplicationAuthenticationStateProvider(AccountService accountService, UniPassClientLogger<ApplicationAuthenticationStateProvider> logger)
+    public ApplicationAuthenticationStateProvider(AccountService accountService,
+        UniPassClientLogger<ApplicationAuthenticationStateProvider> logger)
     {
         _accountService = accountService;
         _logger = logger;
@@ -37,14 +38,14 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
         var result = new AuthenticationState(new ClaimsPrincipal(identity));
         return result;
     }
-    
+
     public async Task Login(LoginViewModel model)
-     {
-         var result = await _accountService.Login(model);
-         if (result.Value) NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-         else throw new UniPassClientException(result.Message);
-     }
-    
+    {
+        var result = await _accountService.Login(model);
+        if (result.Value) NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+        else throw new UniPassClientException(result.Message);
+    }
+
     private async Task<ApplicationAuthenticationState> GetAuthenticationState()
     {
         try
@@ -71,5 +72,8 @@ public class ApplicationAuthenticationStateProvider : AuthenticationStateProvide
         NotifyAuthenticationStateChanged(GetAnonymousState());
     }
 
-    private static async Task<AuthenticationState> GetAnonymousState() => new(new ClaimsPrincipal());
+    private static async Task<AuthenticationState> GetAnonymousState()
+    {
+        return new AuthenticationState(new ClaimsPrincipal());
+    }
 }

@@ -1,7 +1,7 @@
-﻿@using UniPass.Client.Services.Api
-@using UniPass.Client.Utils
-@using UniPass.Client.Components.KeyComponents
+﻿@using UniPass.Client.Utils
 @using UniPass.Infrastructure.Models
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Components.KeyComponents
 @inject DialogService DialogService
 @inject KeyService KeyService
 @inject NotificationService NotificationService
@@ -27,13 +27,13 @@
 
     private async Task CreateKey(Folder folder)
     {
-        var result = await DialogService.OpenAsync<CreateKeyModal>($"",
-            new Dictionary<string, object>() { { "FolderId", folder.Id } },
-            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+        var result = await DialogService.OpenAsync<CreateKeyModal>("",
+            new Dictionary<string, object> { { "FolderId", folder.Id } },
+            new DialogOptions { Width = "auto", Resizable = true, Draggable = true });
         if (result is null) return;
 
         var newKey = result as Key;
-        
+
         //Update keyList inside folder
         var updatedFolder = Folders.FirstOrDefault(f => f.Id.Equals(folder.Id));
         if (updatedFolder!.Keys?.Any() == true)
@@ -48,9 +48,9 @@
 
     private async Task CreateFolder()
     {
-        var result = await DialogService.OpenAsync<CreateFolderModal>($"Создание новой папки",
-            new Dictionary<string, object>() { },
-            new DialogOptions() { Width = "auto", Resizable = true, Draggable = true });
+        var result = await DialogService.OpenAsync<CreateFolderModal>("Создание новой папки",
+            new Dictionary<string, object>(),
+            new DialogOptions { Width = "auto", Resizable = true, Draggable = true });
 
         if (result is null) return;
 
@@ -86,4 +86,5 @@
 
         NotificationService.ShowNotification("Уведомление", result.Message, NotificationSeverity.Success);
     }
+
 }

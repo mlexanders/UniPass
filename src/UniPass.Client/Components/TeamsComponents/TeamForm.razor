@@ -1,6 +1,5 @@
 ﻿@using UniPass.Client.Utils
 @using UniPass.Infrastructure.Models
-
 <RadzenTemplateForm TItem="Team" Data="@_team" Submit="@(async (Team args) => { await Submit(args); })">
     <RadzenRow>
         <RadzenColumn>
@@ -12,7 +11,7 @@
                             <RadzenTextBox @bind-Value="@_team.Name" ReadOnly="@IsReadonlyForm"/>
                         </ChildContent>
                         <Helper>
-                            <RadzenRequiredValidator Text="@RequiredMessage" Popup=@_popup></RadzenRequiredValidator>
+                            <RadzenRequiredValidator Text="@RequiredMessage" Popup="@_popup"></RadzenRequiredValidator>
                         </Helper>
                     </RadzenFormField>
 
@@ -35,7 +34,7 @@
     private Team _team;
 
     [Parameter] public Team Team { get; set; } = new();
-    
+
     // [Parameter]
     // public string Text
     // {
@@ -45,7 +44,10 @@
 
     [Parameter] public EventCallback<Team> OnSubmit { get; set; }
 
-    protected override void OnInitialized() => _team = Team.Copy();
+    protected override void OnInitialized()
+    {
+        _team = Team.Copy();
+    }
 
     private async Task Submit(Team team)
     {
@@ -60,4 +62,5 @@
         _team.Map(Team);
         OnSubmit.InvokeAsync();
     }
+
 }

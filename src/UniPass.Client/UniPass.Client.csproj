@@ -6,17 +6,17 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
         <Authors>mlexanders</Authors>
-<!--        <StaticWebAssetBasePath>UniPass.Application.Client</StaticWebAssetBasePath>-->
-<!--        <AssemblyName>UniPass.Application</AssemblyName>-->
-<!--        <RootNamespace>UniPass.Application</RootNamespace>-->
+        <!--        <StaticWebAssetBasePath>UniPass.Application.Client</StaticWebAssetBasePath>-->
+        <!--        <AssemblyName>UniPass.Application</AssemblyName>-->
+        <!--        <RootNamespace>UniPass.Application</RootNamespace>-->
 
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.2"/>
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="8.0.2"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.2" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.2"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0"/>
         <PackageReference Include="Radzen.Blazor" Version="*"/>
     </ItemGroup>
 
@@ -25,38 +25,38 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="wwwroot\css\app.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-      <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-      <_ContentIncludedByDefault Remove="wwwroot\favicon.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\icon-192.png" />
-      <_ContentIncludedByDefault Remove="wwwroot\index.html" />
-      <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
+        <_ContentIncludedByDefault Remove="wwwroot\css\app.css"/>
+        <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css"/>
+        <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map"/>
+        <_ContentIncludedByDefault Remove="wwwroot\favicon.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\icon-192.png"/>
+        <_ContentIncludedByDefault Remove="wwwroot\index.html"/>
+        <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
-        <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
-      </Reference>
-      <Reference Include="Microsoft.AspNetCore.Http.Features" />
+        <Reference Include="Microsoft.AspNetCore.Http.Abstractions">
+            <HintPath>..\..\..\..\..\..\Program Files\dotnet\shared\Microsoft.AspNetCore.App\8.0.2\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+        </Reference>
+        <Reference Include="Microsoft.AspNetCore.Http.Features"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Components\Modals\Folder\FolderHierarchy.razor.css" />
+        <None Remove="Components\Modals\Folder\FolderHierarchy.razor.css"/>
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Components\FolderComponents\CreateFolderModal.razor" />
-      <AdditionalFiles Include="Components\FolderComponents\FolderForm.razor" />
-      <AdditionalFiles Include="Components\KeyComponents\CreateKeyModal.razor" />
-      <AdditionalFiles Include="Components\KeyComponents\KeyCard.razor" />
-      <AdditionalFiles Include="Components\KeyComponents\KeyForm.razor" />
+        <AdditionalFiles Include="Components\FolderComponents\CreateFolderModal.razor"/>
+        <AdditionalFiles Include="Components\FolderComponents\FolderForm.razor"/>
+        <AdditionalFiles Include="Components\KeyComponents\CreateKeyModal.razor"/>
+        <AdditionalFiles Include="Components\KeyComponents\KeyCard.razor"/>
+        <AdditionalFiles Include="Components\KeyComponents\KeyForm.razor"/>
     </ItemGroup>
 
     <ItemGroup>
-      <UpToDateCheckInput Remove="Components\Modals\Key\CreateKeyModal.razor" />
-      <UpToDateCheckInput Remove="Components\Modals\Key\KeyCard.razor" />
-      <UpToDateCheckInput Remove="Components\Modals\Key\KeyForm.razor" />
+        <UpToDateCheckInput Remove="Components\Modals\Key\CreateKeyModal.razor"/>
+        <UpToDateCheckInput Remove="Components\Modals\Key\KeyCard.razor"/>
+        <UpToDateCheckInput Remove="Components\Modals\Key\KeyForm.razor"/>
     </ItemGroup>
-    
+
 </Project>

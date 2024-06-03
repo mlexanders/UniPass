@@ -19,7 +19,7 @@ public static class Mapper
         };
         return result;
     }
-    
+
     public static void Map(this Key key, Key source)
     {
         key.Id = source.Id;
@@ -31,7 +31,7 @@ public static class Mapper
         key.FolderId = source.FolderId;
         key.Folder = source.Folder;
     }
-    
+
     public static Folder Copy(this Folder folder)
     {
         var result = new Folder
@@ -39,11 +39,11 @@ public static class Mapper
             Id = folder.Id,
             Name = folder.Name,
             Keys = folder.Keys,
-            OwnerId = folder.OwnerId,
+            OwnerId = folder.OwnerId
         };
         return result;
     }
-    
+
     public static void Map(this Folder folder, Folder source)
     {
         folder.Id = source.Id;
@@ -51,7 +51,7 @@ public static class Mapper
         folder.OwnerId = source.OwnerId;
         folder.Keys = source.Keys;
     }
-    
+
     public static Team Copy(this Team team)
     {
         var result = new Team
@@ -60,12 +60,11 @@ public static class Mapper
             Name = team.Name,
             OrganizerId = team.OrganizerId,
             Organizer = team.Organizer,
-            Workers = team.Workers,
-
+            Workers = team.Workers
         };
         return result;
     }
-    
+
     public static void Map(this Team team, Team source)
     {
         team.Id = source.Id;

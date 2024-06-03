@@ -10,12 +10,15 @@
     [Parameter] public string Text { get; set; }
     [Parameter] public EventCallback Callback { get; set; }
 
-    private NotificationMessage GetDefaultMessage() => new NotificationMessage
+    private NotificationMessage GetDefaultMessage()
     {
-        Severity = NotificationSeverity.Info,
-        Duration = 700,
-        Summary = Text ?? "Значение скопировано в буфер обмена",
-    };
+        return new NotificationMessage()
+        {
+            Severity = NotificationSeverity.Info,
+            Duration = 700,
+            Summary = Text ?? "Значение скопировано в буфер обмена"
+        };
+    }
 
     private async Task OnClick()
     {
@@ -23,4 +26,5 @@
         await Callback.InvokeAsync();
         NotificationService.Notify(GetDefaultMessage());
     }
+
 }

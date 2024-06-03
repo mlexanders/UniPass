@@ -5,5 +5,9 @@
 
 @code {
 
-    protected override async Task OnInitializedAsync() => NavigationManager.NavigateTo("/Login", false);
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.NavigateTo("/Login", false);
+    }
+
 }

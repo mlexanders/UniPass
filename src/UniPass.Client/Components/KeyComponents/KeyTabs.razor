@@ -15,7 +15,7 @@
                 <KeyForm Text="Редактирование" Key="@SelectedKey" OnSubmit="@OnKeyUpdate"></KeyForm>
             }
         </RadzenTabsItem>
-        
+
         <RadzenTabsItem Visible="DeletingEnabled" Disabled="@(!TabsIsEnabled())" Icon="delete">
             @if (SelectedKey != null)
             {
@@ -28,7 +28,7 @@
                 </RadzenStack>
             }
         </RadzenTabsItem>
-        
+
     </Tabs>
 </RadzenTabs>
 
@@ -41,7 +41,10 @@
     [Parameter] public bool DeletingEnabled { get; set; }
     private bool _isDeleting = false;
 
-    private bool TabsIsEnabled() => SelectedKey != null;
+    private bool TabsIsEnabled()
+    {
+        return SelectedKey != null;
+    }
 
     private async Task Deletekey(Key key)
     {
@@ -49,4 +52,5 @@
         await OnKeyDelete.InvokeAsync(key);
         _isDeleting = false;
     }
+
 }

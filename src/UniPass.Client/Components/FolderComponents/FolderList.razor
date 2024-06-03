@@ -1,6 +1,6 @@
 ﻿@using UniPass.Infrastructure.Models
 <RadzenDataGrid SelectionMode="DataGridSelectionMode.Single" AllowVirtualization="true"
-                ExpandMode="DataGridExpandMode.Single"  @bind-Value="@_selectedFolder"
+                ExpandMode="DataGridExpandMode.Single" @bind-Value="@_selectedFolder"
                 Data="@Folders" TItem="Folder">
     <Template Context="folder">
         <RadzenBody class="rz-p-1" Style="height: 220px">
@@ -21,14 +21,15 @@
                     <RadzenRow>
                         <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
                             <RadzenButton Size="ButtonSize.Small" Icon="add_circle_outline" ButtonStyle="ButtonStyle.Primary"
-                                          Click="@(async () => await FolderCreate())" ></RadzenButton>
+                                          Click="@(async () => await FolderCreate())">
+                            </RadzenButton>
                         </RadzenStack>
                         <RadzenStack AlignItems="AlignItems.Start" JustifyContent="JustifyContent.Center">
                             <RadzenText class="rz-mt-1 rz-ms-4" TextStyle="TextStyle.Subtitle2">Папки</RadzenText>
                         </RadzenStack>
                     </RadzenRow>
                 </RadzenStack>
-                        
+
             </HeaderTemplate>
             <Template Context="folder">
                 <RadzenStack>
@@ -47,7 +48,7 @@
                                 <RadzenButton Size="ButtonSize.Small" Icon="add" Click="@(async () => await CreateKey(folder))"/>
                             </RadzenStack>
                         </RadzenColumn>
-                        
+
                         <RadzenColumn Size="1">
                             <RadzenStack AlignItems="AlignItems.End" JustifyContent="JustifyContent.Center">
                                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Icon="delete_forever" Click="@(async () => await DeleteFolder(folder))"/>
@@ -68,7 +69,7 @@
     [Parameter] public IList<Key> SelectedKey { get; set; }
     [Parameter] public EventCallback<IList<Key>> SelectedKeyChanged { get; set; }
 
-    
+
     private IList<Folder> _selectedFolder;
 
     private async Task CreateKey(Folder folder)
@@ -91,4 +92,5 @@
     {
         await OnFolderDelete.InvokeAsync(folder);
     }
+
 }

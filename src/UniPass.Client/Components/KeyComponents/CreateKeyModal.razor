@@ -1,7 +1,7 @@
-﻿@using UniPass.Client.Services.Api
-@using UniPass.Client.Utils
-@using UniPass.Client.Services
+﻿@using UniPass.Client.Utils
 @using UniPass.Infrastructure.Models
+@using UniPass.Client.Services.Api
+@using UniPass.Client.Services
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject KeyService KeyService
@@ -23,7 +23,7 @@
                 DialogService.Close();
                 return;
             }
-            
+
             key.FolderId = FolderId;
             var result = await KeyService.Create(key);
             if (!result.Success)
@@ -43,4 +43,5 @@
 
         DialogService.Close(key);
     }
+
 }

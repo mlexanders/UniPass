@@ -13,8 +13,8 @@
             <RadzenAlert Shade="Shade.Lighter" Variant="Variant.Flat" Size="AlertSize.Small" AlertStyle="AlertStyle.Info" Visible="@_infoVisible">@_info</RadzenAlert>
             <RadzenLogin
                 Username="@_model.Email" Password="@_model.Password"
-                Login="@(async (a) => await Submit(a))" 
-                AllowRegister="true" Register="@OnRegister"
+                Login="@(async a => await Submit(a))"
+                AllowRegister="true" Register="@(() => OnRegister())"
                 LoginText="Войти" PasswordText="Пароль"
                 UserText="Логин"
                 ResetPasswordText="Сбросить пароль"
@@ -27,3 +27,12 @@
         </RadzenTemplateForm>
     </RadzenColumn>
 </RadzenRow>
+
+@code {
+
+    private async Task OnRegister()
+    {
+        NavigationManager.NavigateTo("/reg");
+    }
+
+}

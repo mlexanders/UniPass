@@ -14,7 +14,8 @@ public class UniPassClientLogger<T> : UniPassBaseLogger<T> where T : class
         Console.WriteLine("---");
     }
 
-    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+    public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
+        Func<TState, Exception, string> formatter)
     {
     }
 
@@ -27,7 +28,7 @@ public class UniPassClientLogger<T> : UniPassBaseLogger<T> where T : class
     {
         return new NoopDisposable();
     }
-    
+
     private class NoopDisposable : IDisposable
     {
         public void Dispose()

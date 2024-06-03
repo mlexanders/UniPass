@@ -1,6 +1,6 @@
-﻿@using UniPass.Infrastructure.Models
+﻿@using UniPass.Client.Utils
+@using UniPass.Infrastructure.Models
 @using UniPass.Client.Services.Api
-@using UniPass.Client.Utils
 @inject DialogService DialogService
 @inject TeamService TeamService
 @inject NotificationService NotificationService
@@ -31,7 +31,7 @@
     private RadzenDataGrid<ApplicationUserModel> _usersGrid;
     private IEnumerable<ApplicationUserModel> _workers;
 
-    private DataGridEditMode _editMode = DataGridEditMode.Single;
+    private readonly DataGridEditMode _editMode = DataGridEditMode.Single;
 
 
     protected override async Task OnInitializedAsync()
@@ -78,8 +78,8 @@
     private async Task AddWorker()
     {
         var result = await DialogService.OpenAsync<AddWorkerToTeamModal>($"Добавление в команду {Team.Name}",
-            new Dictionary<string, object>() { { "Team", Team } },
-            new DialogOptions()
+            new Dictionary<string, object> { { "Team", Team } },
+            new DialogOptions
             {
                 Height = "auto",
                 Resizable = true, Draggable = true

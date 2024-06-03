@@ -4,7 +4,6 @@ namespace UniPass.Client.Utils;
 
 public static class NotificationExtension
 {
-    
     public static void ShowExceptionNotification(this NotificationService service, Exception e)
     {
         service.Notify(GetNotification("Ошибка", e.Message, NotificationSeverity.Error));
