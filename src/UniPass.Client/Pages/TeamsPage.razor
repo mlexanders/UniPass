@@ -8,13 +8,10 @@
 @inject DialogService DialogService
 @inject NotificationService NotificationService
 @inject TeamService TeamService
+@attribute [Authorize]
 
 
 <RadzenRow AlignItems="AlignItems.Center" Class="rz-mb-2" Gap="0.3rem">
-
-    @* <RadzenColumn> *@
-    @*     <RadzenButton Icon="add_circle_outline" Text="Добавить" Click="@OnCreateTeam" Variant="Variant.Flat"/> *@
-    @* </RadzenColumn> *@
 
     <RadzenColumn>
         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" Gap="0.5rem">
