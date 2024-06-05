@@ -10,7 +10,6 @@ public class ApplicationDbContext : DbContextBase
     {
     }
 
-    public DbSet<ApplicationUserProfile> Profiles { get; set; } = null!;
     public DbSet<Team> Teams { get; set; } = null!;
     public DbSet<Folder> Folders { get; set; } = null!;
     public DbSet<Key> Keys { get; set; } = null!;

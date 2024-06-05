@@ -65,21 +65,6 @@ public static class DatabaseInitializer
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString("D"),
-                ApplicationUserProfile = new ApplicationUserProfile
-                {
-                    CreatedAt = DateTime.Now,
-                    CreatedBy = "SEED",
-                    Permissions = new List<AppPermission>
-                    {
-                        new()
-                        {
-                            CreatedAt = DateTime.Now,
-                            CreatedBy = "SEED",
-                            PolicyName = "Profiles:Roles:Get",
-                            Description = "Access policy for view Roles in user Profiles"
-                        }
-                    }
-                }
             };
             
             await CreateUser(context, user, scope, roles);

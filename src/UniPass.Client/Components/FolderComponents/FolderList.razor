@@ -1,7 +1,7 @@
 ﻿@using UniPass.Infrastructure.Models
 <RadzenDataGrid SelectionMode="DataGridSelectionMode.Single" AllowVirtualization="true"
                 ExpandMode="DataGridExpandMode.Single" @bind-Value="@_selectedFolder"
-                Data="@Folders" TItem="Folder">
+                Data="@Folders" TItem="Folder" EmptyText="Папок еще нет" >
     <Template Context="folder">
         <RadzenBody class="rz-p-1" Style="height: 220px">
             <RadzenDataGrid Data="@folder.Keys" Density="Density.Compact" EmptyText="Паролей в этой папке еще нет"

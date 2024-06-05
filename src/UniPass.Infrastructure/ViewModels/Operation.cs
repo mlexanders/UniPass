@@ -1,3 +1,5 @@
+using UniPass.Infrastructure.Models;
+
 namespace UniPass.Infrastructure.ViewModels;
 
 public class Operation<T>
@@ -42,6 +44,11 @@ public class Operation<T>
         return new Operation<T>(message, result, success);
     }
     
+    // public static Operation Result(Key result, string message = "", bool success = true)
+    // {
+    //     return new Operation<Key>(message, result, success);
+    // }
+    //
     public static Operation<T> Result(string message = "", bool success = true)
     {
         return new Operation<T>(message, success);

@@ -6,7 +6,6 @@ namespace UniPass.Infrastructure.Models;
 public class ApplicationUserModel : IdentityUser<Guid>, IUserModel
 {
     public Guid? ApplicationUserProfileId { get; set; }
-    public virtual ApplicationUserProfile? ApplicationUserProfile { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public virtual ICollection<Team>? Teams { get; set; }

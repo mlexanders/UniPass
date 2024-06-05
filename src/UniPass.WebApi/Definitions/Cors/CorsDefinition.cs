@@ -4,15 +4,8 @@ using UniPass.Infrastructure;
 
 namespace UniPass.WebApi.Definitions.Cors;
 
-/// <summary>
-///     Cors configurations
-/// </summary>
 public class CorsDefinition : AppDefinition
 {
-    /// <summary>
-    ///     Configure services for current application
-    /// </summary>
-    /// <param name="builder"></param>
     public override void ConfigureServices(WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
