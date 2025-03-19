@@ -13,7 +13,6 @@ UniPass — это безопасное и удобное приложение �
 
 ## Схема взаимодествия 
 ![image](https://github.com/user-attachments/assets/b6063b7f-943e-4885-be44-7e82452a0ce4)
-![image](https://github.com/user-attachments/assets/27fbf07f-4368-4741-a1cc-c49f463b6740)
 
 ## Клиент
 ![image](https://github.com/user-attachments/assets/d7df2909-0503-4215-8b74-3688d9ff07b5)
