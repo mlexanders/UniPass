@@ -1,4 +1,4 @@
-# UniPass - Управление паролями {Дипломная работа}
+![image](https://github.com/user-attachments/assets/13c9267c-a2ac-4d67-880f-0c71920fabe8)# UniPass - Управление паролями {Дипломная работа}
 
 ## Описание проекта
 UniPass — это безопасное и удобное приложение для хранения и управления паролями. Система построена на основе клиент-серверной архитектуры, где **Blazor WebAssembly** используется для клиентской части, а **ASP.NET Core Web API** – для серверной.
@@ -16,7 +16,8 @@ UniPass — это безопасное и удобное приложение �
 
 ## Клиент
 ![image](https://github.com/user-attachments/assets/d7df2909-0503-4215-8b74-3688d9ff07b5)
-![image](https://github.com/user-attachments/assets/18efbd22-9948-4993-b90b-1b98fa340268)
-![image](https://github.com/user-attachments/assets/e446882f-2abb-4759-acf6-c79eef76adcb)
-![image](https://github.com/user-attachments/assets/578b11aa-b18c-42b5-a616-f4fd47e3f5ee)
+![image](https://github.com/user-attachments/assets/00bb56e3-10c3-4061-9a68-61344acd823d)
+![image](https://github.com/user-attachments/assets/23df248b-f878-43f4-a3b8-88162107f259)
+![image](https://github.com/user-attachments/assets/683a39e5-7af8-45b0-af4f-6674e4b15eb4)
+
 
