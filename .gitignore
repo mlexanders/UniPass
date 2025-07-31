@@ -1,11 +1,4 @@
-﻿/.idea/.idea.UniPass/.idea/codeStyles/codeStyleConfig.xml
-/.idea/.idea.UniPass/.idea/.gitignore
-/.idea/.idea.UniPass/.idea/encodings.xml
-/.idea/.idea.UniPass/.idea/indexLayout.xml
-/.idea/config/applicationhost.config
-
-
-[Bb]in/
+﻿[Bb]in/
 [Oo]bj/
 
-/.idea/
+.idea/
